@@ -13,8 +13,6 @@ import {
 } from '../../store/players';
 import { toggleAllowIndividualMonsterLevels } from '../../store/monsters';
 
-import SimpleStorage from 'react-simple-storage';
-
 import './List.css';
 
 class ListComponent extends React.Component {
@@ -26,7 +24,6 @@ class ListComponent extends React.Component {
             selectedMonsters: [],
             selectedBoss: BOSS_LIST[0]
         };
-        console.log('ListComponent', this.state);
     }
 
     selectBoss(boss) {
@@ -49,7 +46,6 @@ class ListComponent extends React.Component {
         );
         return (
             <div className="Monsters--List">
-                <SimpleStorage parent={this} prefix={'Gloomhaven_Data'} />
                 <div className="Monsters--List--LevelContainer">
                     Level: {this.props.baseScenarioLevel}
                     <select

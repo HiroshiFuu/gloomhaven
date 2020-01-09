@@ -10,6 +10,7 @@ import { BonusSelectors } from '../UnitTracking/BonusSelectors';
 import { StatusEffectTracker } from '../UnitTracking/StatusEffectTracker';
 import { HPTracker } from '../UnitTracking/HPTracker';
 import {
+    setXPAction,
     setLevelAction,
     toggleStatusEffectAction,
     setHPAction
@@ -26,7 +27,7 @@ class PlayerTrackerComponent extends React.Component {
         super(props);
 
         this.state = {
-            xp: 0,
+            xp: this.props.player.xp,
             showPerksModal: false,
             showSummonModal: false
         };
@@ -40,6 +41,7 @@ class PlayerTrackerComponent extends React.Component {
         this.setState({
             xp
         });
+        this.props.setXP(xp);
     }
 
     togglePerksModal(showPerksModal) {
@@ -132,17 +134,13 @@ class PlayerTrackerComponent extends React.Component {
                             <div className="PlayerTracker--XP--Buttons">
                                 <button
                                     disabled={this.state.xp === 0}
-                                    onClick={() =>
-                                        this.setXP(this.state.xp - 1)
-                                    }
+                                    onClick={() => this.setXP(this.state.xp - 1)}
                                 >
                                     -
                                 </button>
                                 {this.state.xp}
                                 <button
-                                    onClick={() =>
-                                        this.setXP(this.state.xp + 1)
-                                    }
+                                    onClick={() => this.setXP(this.state.xp + 1)}
                                 >
                                     +
                                 </button>
@@ -176,11 +174,14 @@ export const PlayerTracker = connect(
     (state, ownProps) => {
         return {
             player: state.players.players[ownProps.name],
-            hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state)
+            hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
+            xp: state.players.players[ownProps.name].xp,
         };
     },
     (dispatch, ownProps) => {
         return {
+            setXP: xp =>
+                setXPAction(dispatch, ownProps.name, xp),
             selectLevel: level =>
                 setLevelAction(dispatch, ownProps.name, level),
             removePlayer: () => removePlayerAction(dispatch, ownProps.name),

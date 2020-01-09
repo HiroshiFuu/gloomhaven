@@ -14,10 +14,12 @@ class PartyManagerComponent extends React.Component {
             partyNameInput: "",
             selectedParty: "",
         };
+        console.log('PartyManagerComponent', this.props);
     }
 
     saveParty() {
         const partyData = Object.entries(this.props.players).reduce((acc, [playerName, player]) => {
+            console.log('saveParty', player);
             const deck = this.props.attackModifierDecks[playerName];
             acc[playerName] = {
                 name: playerName,
@@ -25,6 +27,7 @@ class PartyManagerComponent extends React.Component {
                 level: player.level,
                 perkUsage: deck.perkUsage,
                 minusOneCards: deck.minusOneCards,
+                xp: player.xp,
             };
             return acc;
         }, {});
