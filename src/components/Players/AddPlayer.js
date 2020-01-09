@@ -5,8 +5,6 @@ import * as classNames from 'classnames';
 import { addPlayerAction } from '../../store/actions/players';
 import { selectors as playersSelectors } from '../../store/players';
 
-import SimpleStorage from 'react-simple-storage';
-
 import './AddPlayer.css';
 
 class AddPlayerComponent extends React.Component {
@@ -21,7 +19,6 @@ class AddPlayerComponent extends React.Component {
             duplicateNameWarning: props.playerNames.includes(initialPlayerName),
             numberOfPlayers: 0
         };
-        console.log('AddPlayerComponent', this.state);
     }
 
     playerNameInputChange(input) {

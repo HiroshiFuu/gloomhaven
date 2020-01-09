@@ -18,8 +18,6 @@ import {
 import { removePlayerAction } from '../../store/actions/players';
 import { selectors as monstersSelectors } from '../../store/monsters';
 
-import SimpleStorage from 'react-simple-storage';
-
 import './PlayerTracker.css';
 
 class PlayerTrackerComponent extends React.Component {

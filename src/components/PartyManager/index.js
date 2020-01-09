@@ -1,46 +1,63 @@
-import React from "react";
-import {connect} from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
-import {loadPartyAction} from "../../store/actions/party";
+import { loadPartyAction } from '../../store/actions/party';
 
-import "./index.css";
+import './index.css';
 
 class PartyManagerComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            savedData: JSON.parse(localStorage.getItem("party")),
-            partyNameInput: "",
-            selectedParty: "",
+            savedData: JSON.parse(localStorage.getItem('party')),
+            partyNameInput: '',
+            selectedParty: ''
         };
         console.log('PartyManagerComponent', this.props);
     }
 
     saveParty() {
-        const partyData = Object.entries(this.props.players).reduce((acc, [playerName, player]) => {
-            console.log('saveParty', player);
-            const deck = this.props.attackModifierDecks[playerName];
-            acc[playerName] = {
-                name: playerName,
-                class: player.class,
-                level: player.level,
-                perkUsage: deck.perkUsage,
-                minusOneCards: deck.minusOneCards,
-                xp: player.xp,
-            };
-            return acc;
-        }, {});
-        const partyName = `${this.state.partyNameInput} - ${new Date().toLocaleDateString()}`;
+        console.log('saveParty this.props', this.props);
+        const partyData = Object.entries(this.props.players).reduce(
+            (acc, [playerName, player]) => {
+                console.log('saveParty player', player);
+                const deck = this.props.attackModifierDecks[playerName];
+                acc[playerName] = {
+                    name: playerName,
+                    class: player.class,
+                    level: player.level,
+                    perkUsage: deck.perkUsage,
+                    minusOneCards: deck.minusOneCards,
+                    xp: player.xp
+                };
+                return acc;
+            },
+            {}
+        );
+        const monstersData = Object.entries(this.props.monsters).reduce(
+            (acc, [monsterName, monsters]) => {
+                console.log('saveParty monsters', monsters);
+                acc[monsterName] = monsters;
+                return acc;
+            },
+            {}
+        );
+        const partyName = `${
+            this.state.partyNameInput
+        } - ${new Date().toLocaleDateString()}`;
         const newSavedData = {
             ...this.state.savedData,
-            [partyName]: partyData,
+            [partyName]: [partyData, monstersData]
         };
-        localStorage.setItem("party", JSON.stringify(newSavedData));
+        console.log('saveParty newSavedData', newSavedData);
+        localStorage.setItem('party', JSON.stringify(newSavedData));
         this.setState({
             savedData: newSavedData,
-            selectedParty: this.state.selectedParty ? this.state.selectedParty : partyName,
-        })
+            selectedParty: this.state.selectedParty
+                ? this.state.selectedParty
+                : partyName
+        });
     }
 
     selectParty(selectedParty) {
@@ -55,55 +72,68 @@ class PartyManagerComponent extends React.Component {
     }
 
     deleteParty() {
-        const newSavedData = {...this.state.savedData};
+        const newSavedData = { ...this.state.savedData };
         delete newSavedData[this.state.selectedParty];
-        localStorage.setItem("party", JSON.stringify(newSavedData));
+        localStorage.setItem('party', JSON.stringify(newSavedData));
         this.setState({
             savedData: newSavedData,
-            selectedParty: "",
-        })
+            selectedParty: ''
+        });
     }
 
     render() {
-        return (<div>
-            <div className="PartyManager--section">
-                <input
-                    placeholder="Party name"
-                    value={this.state.partyNameInput}
-                    onChange={(e) => this.setState({partyNameInput: e.target.value})}
-                />
-                <button onClick={() => this.saveParty()}>Save Party</button>
-                <select
-                    value={this.state.selectedParty}
-                    onChange={(event) => this.selectParty(event.target.value)}
-                >
-                    <option value="">Select a party...</option>
-                    {this.state.savedData && Object.keys(this.state.savedData).map((partyName) => 
-                        <option value={partyName} key={partyName}>{partyName}</option>
-                    )}
-                </select>
-                <button disabled={!this.state.selectedParty} onClick={() => this.loadParty()}>
-                    Load Party
-                </button>
-                <button disabled={!this.state.selectedParty} onClick={() => this.deleteParty()}>
-                    Delete Party
-                </button>
+        return (
+            <div>
+                <div className="PartyManager--section">
+                    <input
+                        placeholder="Party name"
+                        value={this.state.partyNameInput}
+                        onChange={e =>
+                            this.setState({ partyNameInput: e.target.value })
+                        }
+                    />
+                    <button onClick={() => this.saveParty()}>Save Party</button>
+                    <select
+                        value={this.state.selectedParty}
+                        onChange={event => this.selectParty(event.target.value)}
+                    >
+                        <option value="">Select a party...</option>
+                        {this.state.savedData &&
+                            Object.keys(this.state.savedData).map(partyName => (
+                                <option value={partyName} key={partyName}>
+                                    {partyName}
+                                </option>
+                            ))}
+                    </select>
+                    <button
+                        disabled={!this.state.selectedParty}
+                        onClick={() => this.loadParty()}
+                    >
+                        Load Party
+                    </button>
+                    <button
+                        disabled={!this.state.selectedParty}
+                        onClick={() => this.deleteParty()}
+                    >
+                        Delete Party
+                    </button>
                 </div>
-        </div>);
+            </div>
+        );
     }
 }
 
 export const PartyManager = connect(
-    (state) => {
+    state => {
         return {
             players: state.players.players,
             attackModifierDecks: state.attackModifierDecks,
+            monsters: state.monsters.monsters
         };
     },
-    (dispatch) => {
+    dispatch => {
         return {
-            loadParty: (party) => loadPartyAction(dispatch, party),
-        }
+            loadParty: party => loadPartyAction(dispatch, party)
+        };
     }
 )(PartyManagerComponent);
-

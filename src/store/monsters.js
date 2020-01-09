@@ -1,7 +1,11 @@
-import {STATUS_EFFECTS, newStatusEffectTracker} from "../lib/statusEffects";
-import {MONSTERS} from "../lib/monsters";
-import {LOAD_PARTY} from "./actions/party";
-import {RESET_MONSTERS, ADD_MONSTERS, REMOVE_MONSTER} from "./actions/monsters";
+import { STATUS_EFFECTS, newStatusEffectTracker } from '../lib/statusEffects';
+import { MONSTERS } from '../lib/monsters';
+import { LOAD_PARTY } from './actions/party';
+import {
+    RESET_MONSTERS,
+    ADD_MONSTERS,
+    REMOVE_MONSTER
+} from './actions/monsters';
 
 function newMonster(name, level, alive, elite) {
     const monsterStats = MONSTERS[name].stats[level];
@@ -12,76 +16,93 @@ function newMonster(name, level, alive, elite) {
         level,
         maxHP: stats.maxHP,
         currentHP: stats.maxHP,
-        statusEffects: newStatusEffectTracker(),
-    }
+        statusEffects: newStatusEffectTracker()
+    };
 }
 
 function newMonsters(name, level) {
     const monster = MONSTERS[name];
     return {
-        monsters: new Array(monster.tokenCount).fill(newMonster(name, level, false, false))
-  };
+        monsters: new Array(monster.tokenCount).fill(
+            newMonster(name, level, false, false)
+        )
+    };
 }
 
 function getAllStatusEffects(monsters) {
-    const aliveMonsters = monsters.filter((m) => m.alive);
+    const aliveMonsters = monsters.filter(m => m.alive);
     return STATUS_EFFECTS.reduce((acc, s) => {
-        if (aliveMonsters.length === 0 ) {
+        if (aliveMonsters.length === 0) {
             acc[s] = false;
             return acc;
         }
         acc[s] = true;
-        aliveMonsters.forEach((m) => {
+        aliveMonsters.forEach(m => {
             acc[s] = acc[s] && m.statusEffects[s];
         });
         return acc;
     }, {});
-};
+}
 
 const defaultState = {
     allowIndividualMonsterLevels: false,
-    monsters: {},
+    monsters: {}
 };
 
-const TOGGLE_ELITE = "monsters/toggleElite";
-const TOGGLE_ALIVE = "monsters/toggleAlive";
-const TOGGLE_ALLOW_INDIVIDUAL_MONSTER_LEVELS = "monsters/level/allowSetting/toggle";
-const SET_LEVEL = "monsters/level/set";
-const TOGGLE_ALL_STATUS_EFFECTS = "monsters/statusEffect/setAll";
-const TOGGLE_STATUS_EFFECT = "monsters/statusEffect/toggle";
-const SET_HP = "monsters/hp/set";
+const TOGGLE_ELITE = 'monsters/toggleElite';
+const TOGGLE_ALIVE = 'monsters/toggleAlive';
+const TOGGLE_ALLOW_INDIVIDUAL_MONSTER_LEVELS =
+    'monsters/level/allowSetting/toggle';
+const SET_LEVEL = 'monsters/level/set';
+const TOGGLE_ALL_STATUS_EFFECTS = 'monsters/statusEffect/setAll';
+const TOGGLE_STATUS_EFFECT = 'monsters/statusEffect/toggle';
+const SET_HP = 'monsters/hp/set';
 
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
-        case LOAD_PARTY:
-        {
-            return defaultState;
+        case LOAD_PARTY: {
+            console.log('monsters LOAD_PARTY', action.party[1]);
+            const loadedMonsters = Object.entries(action.party[1]).reduce(
+                (acc, [monsterName, monstersData]) => {
+                    console.log('monsters LOAD_PARTY', monsterName, monstersData);
+                    acc[monsterName] = monstersData;
+                    return acc;
+                },
+                {}
+            );
+            console.log('monsters LOAD_PARTY loadedMonsters', loadedMonsters);
+            return {
+                ...defaultState,
+                monsters: loadedMonsters
+            };
         }
-        case RESET_MONSTERS: return defaultState;
-        case ADD_MONSTERS:
-        {
+        case RESET_MONSTERS:
+            return defaultState;
+        case ADD_MONSTERS: {
             return {
                 ...state,
                 monsters: {
                     ...state.monsters,
                     ...action.monsters.reduce((acc, name) => {
-                        acc[name] = newMonsters(name, action.level, action.numPlayers);
+                        acc[name] = newMonsters(
+                            name,
+                            action.level,
+                            action.numPlayers
+                        );
                         return acc;
-                    }, {}),
-                },
+                    }, {})
+                }
             };
         }
-        case REMOVE_MONSTER:
-        {
+        case REMOVE_MONSTER: {
             const newState = {
                 ...state,
-                monsters: {...state.monsters},
+                monsters: { ...state.monsters }
             };
             delete newState.monsters[action.name];
             return newState;
         }
-        case TOGGLE_ELITE:
-        {
+        case TOGGLE_ELITE: {
             const monsters = state.monsters[action.name].monsters;
             const monster = monsters[action.index];
             return {
@@ -95,16 +116,15 @@ export const reducer = (state = defaultState, action) => {
                                 action.name,
                                 monster.level,
                                 monster.alive,
-                                !monster.elite,
+                                !monster.elite
                             ),
-                            ...monsters.slice(action.index + 1),
-                        ],
-                    },
-                },
+                            ...monsters.slice(action.index + 1)
+                        ]
+                    }
+                }
             };
         }
-        case TOGGLE_ALIVE:
-        {
+        case TOGGLE_ALIVE: {
             const monsters = state.monsters[action.name].monsters;
             const monster = monsters[action.index];
             return {
@@ -118,23 +138,21 @@ export const reducer = (state = defaultState, action) => {
                                 action.name,
                                 monster.level,
                                 !monster.alive,
-                                monster.elite,
+                                monster.elite
                             ),
-                            ...monsters.slice(action.index + 1),
-                        ],
-                    },
-                },
+                            ...monsters.slice(action.index + 1)
+                        ]
+                    }
+                }
             };
         }
-        case TOGGLE_ALLOW_INDIVIDUAL_MONSTER_LEVELS:
-        {
+        case TOGGLE_ALLOW_INDIVIDUAL_MONSTER_LEVELS: {
             return {
                 ...state,
-                allowIndividualMonsterLevels: !state.allowIndividualMonsterLevels,
-            }
+                allowIndividualMonsterLevels: !state.allowIndividualMonsterLevels
+            };
         }
-        case SET_LEVEL:
-        {
+        case SET_LEVEL: {
             const monsters = state.monsters[action.name].monsters;
             const monster = monsters[action.index];
             return {
@@ -148,16 +166,15 @@ export const reducer = (state = defaultState, action) => {
                                 action.name,
                                 action.level,
                                 monster.alive,
-                                monster.elite,
+                                monster.elite
                             ),
-                            ...monsters.slice(action.index + 1),
-                        ],
-                    },
-                },
+                            ...monsters.slice(action.index + 1)
+                        ]
+                    }
+                }
             };
         }
-        case TOGGLE_ALL_STATUS_EFFECTS:
-        {
+        case TOGGLE_ALL_STATUS_EFFECTS: {
             const monsters = state.monsters[action.name].monsters;
             const allStatusEffects = getAllStatusEffects(monsters);
             return {
@@ -165,24 +182,25 @@ export const reducer = (state = defaultState, action) => {
                 monsters: {
                     ...state.monsters,
                     [action.name]: {
-                        monsters: monsters.map((m) => {
+                        monsters: monsters.map(m => {
                             if (!m.alive) {
-                            return m;
+                                return m;
                             }
                             return {
                                 ...m,
                                 statusEffects: {
                                     ...m.statusEffects,
-                                    [action.statusEffect]: !allStatusEffects[action.statusEffect],
-                                },
+                                    [action.statusEffect]: !allStatusEffects[
+                                        action.statusEffect
+                                    ]
+                                }
                             };
                         })
-                    },
-                },
+                    }
+                }
             };
         }
-        case TOGGLE_STATUS_EFFECT:
-        {
+        case TOGGLE_STATUS_EFFECT: {
             const monsters = state.monsters[action.name].monsters;
             const monster = monsters[action.index];
             return {
@@ -196,17 +214,17 @@ export const reducer = (state = defaultState, action) => {
                                 ...monster,
                                 statusEffects: {
                                     ...monster.statusEffects,
-                                    [action.statusEffect]: !monster.statusEffects[action.statusEffect],
-                                },
+                                    [action.statusEffect]: !monster
+                                        .statusEffects[action.statusEffect]
+                                }
                             },
-                            ...monsters.slice(action.index + 1),
-                        ],
-                    },
-                },
+                            ...monsters.slice(action.index + 1)
+                        ]
+                    }
+                }
             };
         }
-        case SET_HP:
-        {
+        case SET_HP: {
             const monsters = state.monsters[action.name].monsters;
             const monster = monsters[action.index];
             return {
@@ -218,49 +236,53 @@ export const reducer = (state = defaultState, action) => {
                             ...monsters.slice(0, action.index),
                             {
                                 ...monster,
-                                currentHP: action.hp,
+                                currentHP: action.hp
                             },
-                            ...monsters.slice(action.index + 1),
-                        ],
-                    },
-                },
+                            ...monsters.slice(action.index + 1)
+                        ]
+                    }
+                }
             };
         }
-        default: return state;
+        default:
+            return state;
     }
-}
+};
 
 export function toggleAliveAction(dispatch, name, index) {
-    dispatch({type: TOGGLE_ALIVE, name, index});
+    dispatch({ type: TOGGLE_ALIVE, name, index });
 }
 
 export function toggleEliteAction(dispatch, name, index) {
-    dispatch({type: TOGGLE_ELITE, name, index});
+    dispatch({ type: TOGGLE_ELITE, name, index });
 }
 
 export function toggleAllowIndividualMonsterLevels(dispatch) {
-    dispatch({type: TOGGLE_ALLOW_INDIVIDUAL_MONSTER_LEVELS});
+    dispatch({ type: TOGGLE_ALLOW_INDIVIDUAL_MONSTER_LEVELS });
 }
 
 export function setLevelAction(dispatch, name, index, level) {
-    dispatch({type: SET_LEVEL, name, index, level});
+    dispatch({ type: SET_LEVEL, name, index, level });
 }
 
 export function toggleAllStatusEffectsAction(dispatch, name, statusEffect) {
-    dispatch({type: TOGGLE_ALL_STATUS_EFFECTS, name, statusEffect});
+    dispatch({ type: TOGGLE_ALL_STATUS_EFFECTS, name, statusEffect });
 }
 
 export function toggleStatusEffectAction(dispatch, name, index, statusEffect) {
-    dispatch({type: TOGGLE_STATUS_EFFECT, name, index, statusEffect});
+    dispatch({ type: TOGGLE_STATUS_EFFECT, name, index, statusEffect });
 }
 
 export function setHPAction(dispatch, name, index, hp) {
-    dispatch({type: SET_HP, name, index, hp});
+    dispatch({ type: SET_HP, name, index, hp });
 }
 
 export const selectors = {
     // status effects across all monsters
-    allStatusEffects: (state, name) => getAllStatusEffects(state.monsters.monsters[name].monsters),
-    isActive: (state, name) => state.monsters.monsters[name].monsters.some((m) => m.alive),
-    hasMonstersInPlay: (state) => state.boss != null || Object.keys(state.monsters.monsters).length > 0,
+    allStatusEffects: (state, name) =>
+        getAllStatusEffects(state.monsters.monsters[name].monsters),
+    isActive: (state, name) =>
+        state.monsters.monsters[name].monsters.some(m => m.alive),
+    hasMonstersInPlay: state =>
+        state.boss != null || Object.keys(state.monsters.monsters).length > 0
 };

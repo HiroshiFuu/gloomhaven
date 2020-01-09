@@ -5,12 +5,12 @@ import {BossMonsterTracker, MonsterTracker} from "./MonsterTracker";
 
 import "./MonsterTrackers.css";
 
-export function MonsterTrackersComponent({boss, monsterNames}) {
+export function MonsterTrackersComponentFunction({boss, monsterNames}) {
     return (
         <div className="Monsters">
             {boss && boss[0] && <BossMonsterTracker boss={boss[0]} />}
             {boss && boss[1] && <BossMonsterTracker boss={boss[1]} />}
-            {monsterNames.map((name) => <MonsterTracker key={name} name={name} />)}
+            {monsterNames.map((name) => {return (<MonsterTracker key={name} name={name} />)})}
         </div>
     );
 }
@@ -22,4 +22,4 @@ export const MonsterTrackers = connect(
             monsterNames: Object.keys(state.monsters.monsters),
         };
     }
-)(MonsterTrackersComponent);
+)(MonsterTrackersComponentFunction);

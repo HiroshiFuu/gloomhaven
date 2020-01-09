@@ -169,7 +169,7 @@ export const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case LOAD_PARTY:
         {
-            const loadedState = Object.entries(action.party).reduce((acc, [playerName, playerData]) => {
+            const loadedState = Object.entries(action.party[0]).reduce((acc, [playerName, playerData]) => {
                 acc[playerName] = {
                     ...newDeckWithPerks(playerData.class, playerData.perkUsage, playerData.minusOneCards),
                     class: playerData.class,
