@@ -8,7 +8,7 @@ import {selectors as playersSelectors} from "../../store/players";
 
 import "./PlayerTrackers.css";
 
-function PlayerTrackersComponent({playerNames, hasMonstersInPlay, selectableClasses}) {
+function PlayerTrackersComponentFunction({playerNames, hasMonstersInPlay, selectableClasses}) {
     return (<div className="PlayerTrackers">
         {playerNames.map((p) => {
             return (<PlayerTracker key={p} name={p} />)
@@ -31,4 +31,4 @@ export const PlayerTrackers = connect(
             selectableClasses: playersSelectors.selectableClasses(state),
         };
     }
-)(PlayerTrackersComponent);
+)(PlayerTrackersComponentFunction);

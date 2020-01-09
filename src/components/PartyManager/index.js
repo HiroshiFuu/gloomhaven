@@ -45,6 +45,9 @@ class PartyManagerComponent extends React.Component {
     }
 
     loadParty() {
+        this.setState({
+            partyNameInput: this.state.selectedParty.split(' - ')[0]
+        });
         this.props.loadParty(this.state.savedData[this.state.selectedParty]);
     }
 
