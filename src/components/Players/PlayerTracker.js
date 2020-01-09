@@ -29,7 +29,6 @@ class PlayerTrackerComponent extends React.Component {
             showPerksModal: false,
             showSummonModal: false
         };
-        console.log('PlayerTrackerComponent', this.state);
     }
 
     setXP(xp) {

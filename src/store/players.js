@@ -37,7 +37,6 @@ const UNSET_INITIATIVE = 'players/initiative/unset';
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case LOAD_PARTY: {
-            console.log('players LOAD_PARTY', action.party[0]);
             const loadedPlayers = Object.entries(action.party[0]).reduce(
                 (acc, [playerName, playerData]) => {
                     acc[playerName] = newPlayer(

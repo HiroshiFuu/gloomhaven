@@ -128,7 +128,8 @@ export const PartyManager = connect(
         return {
             players: state.players.players,
             attackModifierDecks: state.attackModifierDecks,
-            monsters: state.monsters.monsters
+            monsters: state.monsters.monsters,
+            monsterDecks: state.monsterDecks,
         };
     },
     dispatch => {

@@ -20,17 +20,17 @@ class MonsterDecksComponent extends React.Component {
         super(props);
 
         this.state = {
-            initiativeSelectorIndex: -1
+            // initiativeSelectorIndex: -1
         };
     }
 
-    showInitiativeSelector(index) {
-        this.setState({ initiativeSelectorIndex: index });
-    }
+    // showInitiativeSelector(index) {
+    //     this.setState({ initiativeSelectorIndex: index });
+    // }
 
-    hideInitiativeSelector = () => {
-        this.setState({ initiativeSelectorIndex: -1 });
-    };
+    // hideInitiativeSelector = () => {
+    //     this.setState({ initiativeSelectorIndex: -1 });
+    // };
 
     render() {
         const {

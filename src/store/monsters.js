@@ -61,16 +61,13 @@ const SET_HP = 'monsters/hp/set';
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case LOAD_PARTY: {
-            console.log('monsters LOAD_PARTY', action.party[1]);
             const loadedMonsters = Object.entries(action.party[1]).reduce(
                 (acc, [monsterName, monstersData]) => {
-                    console.log('monsters LOAD_PARTY', monsterName, monstersData);
                     acc[monsterName] = monstersData;
                     return acc;
                 },
                 {}
             );
-            console.log('monsters LOAD_PARTY loadedMonsters', loadedMonsters);
             return {
                 ...defaultState,
                 monsters: loadedMonsters
