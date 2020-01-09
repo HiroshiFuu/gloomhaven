@@ -3,12 +3,13 @@
 }
 
 .Game--leftSection {
-    flex: 0 1 0px;
-    margin-left: 8px;
+    /*flex: 0 1 0px;*/
+    margin-left: 4px;
+    width: 196px;
 }
 
 .Game--rightSection {
-    margin-left: 8px;
+    margin-left: 12px;
     width: 100%;
 }
 
@@ -49,9 +50,9 @@
 .Game--SpecialCardCount {
     display: flex;
     align-items: center;
-    margin-left: 6px;
-    margin-right: 10px;
-    font-size: x-large;
+    /*margin-left: 6px;*/
+    /*margin-right: 10px;*/
+    font-size: large;
 }
 
 .Game--SpecialCardCount--Icon {
