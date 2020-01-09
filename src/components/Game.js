@@ -126,7 +126,7 @@ class GameComponent extends React.Component {
                             <AttackModifierDeck key={this.state.selectedAttackModifierDeck} name={this.state.selectedAttackModifierDeck} />
                         </div>
                     </div>
-                    <div>
+                    <div className="Game--rightSection">
                         <div className="Game--Section">
                             <h3 className="Game--Section--Toggle" onClick={() => this.toggleSection("players")}>Players <span className="Game--Section--ToggleSymbol">{this.state.showSections.players ? "▾" : "▸"}</span></h3>
                             <PartyManager />

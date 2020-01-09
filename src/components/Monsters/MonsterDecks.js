@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as classNames from 'classnames';
+// import * as classNames from 'classnames';
 
 import { Deck } from './Deck';
-import { InitiativeSelector } from './InitiativeTimeline/InitiativeSelector';
-import { EndTurnButton } from '../Header/EndTurnButton';
+// import { InitiativeSelector } from './InitiativeTimeline/InitiativeSelector';
+// import { EndTurnButton } from '../Header/EndTurnButton';
 import { MONSTERS, BOSS_STATS } from '../../lib/monsters';
 import { endTurnAction } from '../../store/actions/turn';
 import {
@@ -35,16 +35,16 @@ class MonsterDecksComponent extends React.Component {
     render() {
         const {
             decks,
-            hasActiveCards,
-            revealNextCards,
-            endTurn,
+            // hasActiveCards,
+            // revealNextCards,
+            // endTurn,
             showStats,
             numPlayers,
             scenarioLevel,
             boss,
-            showTimeline,
-            toggleTimeline,
-            playerInitiatives
+            // showTimeline,
+            // toggleTimeline,
+            // playerInitiatives
         } = this.props;
         const deckNames = Object.keys(decks);
         const activeDecks = deckNames.filter(m => decks[m].active);
@@ -61,16 +61,16 @@ class MonsterDecksComponent extends React.Component {
                 );
             })
             .concat(inactiveDecks);
-        const initiativeOrderMap = deckOrder.reduce((acc, m) => {
-            const deck = decks[m];
-            if (deck.currentCard) {
-                let initiativeContent = acc[decks[m].currentCard.initiative];
-                acc[decks[m].currentCard.initiative] = (
-                    initiativeContent || []
-                ).concat(m);
-            }
-            return acc;
-        }, {});
+        // const initiativeOrderMap = deckOrder.reduce((acc, m) => {
+        //     const deck = decks[m];
+        //     if (deck.currentCard) {
+        //         let initiativeContent = acc[decks[m].currentCard.initiative];
+        //         acc[decks[m].currentCard.initiative] = (
+        //             initiativeContent || []
+        //         ).concat(m);
+        //     }
+        //     return acc;
+        // }, {});
         return (
             <div>
                 {/*
