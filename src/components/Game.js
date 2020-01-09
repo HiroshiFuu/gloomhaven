@@ -16,6 +16,13 @@ import {selectors as playersSelectors} from "../store/players";
 import {selectors as monstersSelectors} from "../store/monsters";
 import {addPlayerAction} from "../store/actions/players";
 
+import { EndTurnButton } from './Header/EndTurnButton';
+import { endTurnAction } from '../store/actions/turn';
+import {
+    revealNextCardsAction,
+    selectors as monstersDecksSelectors
+} from '../store/monsterDecks';
+
 import "./Game.css";
 
 class GameComponent extends React.Component {
@@ -63,7 +70,18 @@ class GameComponent extends React.Component {
         });
     }
 
+    handleHasActiveCardsChanged(hasActiveCardsChanged) {
+        console.log('handleHasActiveCardsChanged', hasActiveCardsChanged);
+    }
+
     render() {
+        const {
+            decks,
+            hasActiveCards,
+            revealNextCards,
+            endTurn,
+        } = this.props;
+        const deckNames = Object.keys(decks);
         return (
             <div>
                 <Header />
@@ -73,7 +91,7 @@ class GameComponent extends React.Component {
                         <div className={classNames({"Game--Section--monsterList": true, "Game--Section--hideSection": !this.state.showSections.monsterList})}>
                             <MonsterList />
                         </div>
-                        <h3 className="Game--Section--Toggle" onClick={() => this.toggleSection("attackModifierDecks")}>Attack Modifier Decks <span className="Game--Section--ToggleSymbol">{this.state.showSections.attackModifierDecks ? "▾" : "▸"}</span></h3>
+                        <h3 className="Game--Section--Toggle" onClick={() => this.toggleSection("attackModifierDecks")}>Attack Modifier Decks {/*<span className="Game--Section--ToggleSymbol">{this.state.showSections.attackModifierDecks ? "▾" : "▸"}</span>*/}</h3>
                         <div className={classNames({"Game--Section--hideSection": !this.state.showSections.attackModifierDecks})}>
                             <div>
                                 <div className="Game--SpecialCardCount--Container">
@@ -148,9 +166,29 @@ class GameComponent extends React.Component {
                                     <input type="radio" checked={this.state.showStats} onChange={() => this.setState({showStats: true})} />
                                     Show stats
                                 </label>
+                <div className="MonsterDecks--Header">
+                    <button
+                        className="MonsterDecks--Header--Button"
+                        disabled={
+                            !deckNames.some(m => decks[m].active) ||
+                            hasActiveCards
+                        }
+                        onClick={() => revealNextCards(deckNames)}
+                    >
+                        Flip Cards
+                    </button>
+                    <EndTurnButton
+                        className={classNames({
+                            'MonsterDecks--Header--Button': true,
+                            'MonsterDecks--Header--ButtonReady': hasActiveCards
+                        })}
+                        endTurnReady={hasActiveCards}
+                        endTurn={() => monstersDecksSelectors.endTurn()}
+                    />
+                </div>
                             </div>
                             <div className={classNames({"Game--Section--hideSection": !this.state.showSections.monsterDecks})}>
-                                <MonsterDecks showStats={this.state.showStats} showTimeline={this.state.showInitiativeTimeline} toggleTimeline={() => this.toggleInitiativeTimeline()} />
+                                <MonsterDecks showStats={this.state.showStats} showTimeline={this.state.showInitiativeTimeline} toggleTimeline={() => this.toggleInitiativeTimeline()}/>
                             </div>
                         </div>
                     </div>
@@ -168,9 +206,15 @@ export const Game = connect(
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
             totalCurses: attackModifierDecksSelectors.totalCurses(state),
             totalBlessings: attackModifierDecksSelectors.totalBlessings(state),
+            decks: state.monsterDecks,
+            hasActiveCards: monstersDecksSelectors.hasActiveCards(state),
         };
     },
     (dispatch, ownProps) => ({
         addPlayer: (name, characterClass) => addPlayerAction(dispatch, name, characterClass, 0),
+        endTurn: () => endTurnAction(dispatch),
+        revealNextCards: () => {
+            revealNextCardsAction(dispatch);
+        }
     }),
 )(GameComponent);

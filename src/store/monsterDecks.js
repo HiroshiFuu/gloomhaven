@@ -85,7 +85,7 @@ export const reducer = (state = defaultState, action) => {
                 ...state,
                 "Boss": {
                     ...deck,
-                    ...(hasActiveCards(state) && revealNextCard(deck)),
+                    ...(hasActiveCards(state, 'Boss') && revealNextCard(deck)),
                 },
             };
         }
@@ -106,8 +106,8 @@ export const reducer = (state = defaultState, action) => {
         case TOGGLE_ACTIVE:
         {
             const deck = state[action.name];
-            let newDeck = {...deck, active: !deck.active, ...(deck.active ? {currentCard: null} : (hasActiveCards(state) && revealNextCard(deck)))};
-            if (newDeck.active && hasActiveCards(state)) {
+            let newDeck = {...deck, active: !deck.active, ...(deck.active ? {currentCard: null} : (hasActiveCards(state, 'TOGGLE_ACTIVE') && revealNextCard(deck)))};
+            if (newDeck.active && hasActiveCards(state, 'TOGGLE_ACTIVE')) {
                 newDeck = {...newDeck, ...revealNextCard(deck)};
             } else if (!newDeck.active) {
                 newDeck.currentCard = null;

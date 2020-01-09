@@ -67,22 +67,22 @@ class PartyManagerComponent extends React.Component {
                     onChange={(e) => this.setState({partyNameInput: e.target.value})}
                 />
                 <button onClick={() => this.saveParty()}>Save Party</button>
-            </div>
-            <select
-                value={this.state.selectedParty}
-                onChange={(event) => this.selectParty(event.target.value)}
-            >
-                <option value="">Select a party...</option>
-                {this.state.savedData && Object.keys(this.state.savedData).map((partyName) => 
-                    <option value={partyName} key={partyName}>{partyName}</option>
-                )}
-            </select>
-            <button disabled={!this.state.selectedParty} onClick={() => this.loadParty()}>
-                Load Party
-            </button>
-            <button disabled={!this.state.selectedParty} onClick={() => this.deleteParty()}>
-                Delete Party
-            </button>
+                <select
+                    value={this.state.selectedParty}
+                    onChange={(event) => this.selectParty(event.target.value)}
+                >
+                    <option value="">Select a party...</option>
+                    {this.state.savedData && Object.keys(this.state.savedData).map((partyName) => 
+                        <option value={partyName} key={partyName}>{partyName}</option>
+                    )}
+                </select>
+                <button disabled={!this.state.selectedParty} onClick={() => this.loadParty()}>
+                    Load Party
+                </button>
+                <button disabled={!this.state.selectedParty} onClick={() => this.deleteParty()}>
+                    Delete Party
+                </button>
+                </div>
         </div>);
     }
 }

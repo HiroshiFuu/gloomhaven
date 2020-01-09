@@ -48,10 +48,10 @@ class ListComponent extends React.Component {
                     {["-1", "+0", "+1", "+2"].map((value, i) => <option key={i - 1} value={i - 1}>{value}</option>)}
                 </select>
             </div>
-            <label className="Monsters--List--allowIndividualMonsterLevels">
+            {/*<label className="Monsters--List--allowIndividualMonsterLevels">
                 <input type="checkbox" checked={this.props.allowIndividualMonsterLevels} onChange={() => this.props.toggleAllowIndividualMonsterLevels()}/>
                 Allow individual monster levels
-            </label>
+            </label>*/}
             <div className="Monsters--List--BossSelectorContainer">
                 <select disabled={this.props.hasBoss} value={this.state.selectedBoss} onChange={(event) => this.selectBoss(event.target.value)}>
                     {BOSS_LIST.map((b) => <option value={b} key={b}>{b}</option>)}

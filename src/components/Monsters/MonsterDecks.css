@@ -1,10 +1,8 @@
 .MonsterDecks--Header--Button {
-    margin-bottom: 12px;
-}
-
-.MonsterDecks--Header--Button {
-    height: 64px;
-    margin-right: 12px;
+    /*margin-bottom: 12px;*/
+    height: 100%;
+    margin-left: 12px;
+    /*margin-right: 12px;*/
     background-color: inherit;
 }
 
