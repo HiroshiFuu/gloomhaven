@@ -37,6 +37,8 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8px;
+    font-family: "ZIKUTANGSFXST";
+    font-size: 20px;
 }
 
 .Game--SpecialCardCount {

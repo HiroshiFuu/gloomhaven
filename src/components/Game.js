@@ -95,14 +95,14 @@ class GameComponent extends React.Component {
                         <div className={classNames({"Game--Section--hideSection": !this.state.showSections.attackModifierDecks})}>
                             <div>
                                 <div className="Game--SpecialCardCount--Container">
-                                    Blessing card count:
+                                    祝福卡数：
                                     <div className="Game--SpecialCardCount">
                                         <img className="Game--SpecialCardCount--Icon" src={blessCard} alt="blessing cards"/>
                                         <div>{`(${this.props.totalBlessings})`}</div>
                                     </div>
                                 </div>
                                 <div className="Game--SpecialCardCount--Container">
-                                    Player curse count:
+                                    诅咒卡数：
                                     <div className="Game--SpecialCardCount">
                                         <img className="Game--SpecialCardCount--Icon" src={curseCard} alt="curse cards"/>
                                         <div>{`(${this.props.totalCurses})`}</div>
@@ -183,7 +183,7 @@ class GameComponent extends React.Component {
                             'MonsterDecks--Header--ButtonReady': hasActiveCards
                         })}
                         endTurnReady={hasActiveCards}
-                        endTurn={() => monstersDecksSelectors.endTurn()}
+                        endTurn={() => endTurn()}
                     />
                 </div>
                             </div>

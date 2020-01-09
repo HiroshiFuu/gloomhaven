@@ -17,6 +17,7 @@ class AddPlayerComponent extends React.Component {
             level: 1,
             playerNameInput: initialPlayerName,
             duplicateNameWarning: props.playerNames.includes(initialPlayerName),
+            numberOfPlayers: 0,
         };
     }
 
@@ -47,7 +48,8 @@ class AddPlayerComponent extends React.Component {
     }
 
     render() {
-        return (<div className="AddPlayer--container">
+        return (
+            <div className="AddPlayer--container">
             <input
                 className={"AddPlayer--playerName"}
                 placeholder="Name"
@@ -92,7 +94,8 @@ class AddPlayerComponent extends React.Component {
                 disabled={this.state.duplicateNameWarning}
                 onClick={() => this.addPlayer(this.state.playerNameInput, this.state.selectedClass, this.state.level)}
             >Add Player</button>
-        </div>);
+        </div>
+        );
     }
 }
 

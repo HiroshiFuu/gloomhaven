@@ -14,7 +14,7 @@ function PlayerTrackersComponent({playerNames, hasMonstersInPlay, selectableClas
             return (<PlayerTracker key={p} name={p} />)
         })}
         {/* use key to force re-render on new player */}
-        {!hasMonstersInPlay && selectableClasses.length > 0 &&
+        {!hasMonstersInPlay && selectableClasses.length > 0 && playerNames.length < 5 &&
             <AddPlayer
                 key={playerNames.length}
                 initialPlayerNumber={playerNames.length + 1}

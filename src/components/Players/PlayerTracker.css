@@ -6,6 +6,10 @@
     text-align: center;
 }
 
+.PlayerTracker--Name button {
+    margin-left: 5px;
+}
+
 .PlayerTracker--Description {
     display: flex;
     justify-content: space-between;
