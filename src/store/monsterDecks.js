@@ -52,13 +52,21 @@ export const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case LOAD_PARTY:
         {
+            let monsterDecks = Object.entries(action.party[1]).reduce((acc, [monsterName, monstersData]) => {
+                    let aliveMonsters = monstersData.monsters.filter(monster => monster.alive);
+                    const deck = newDeck(MONSTERS[monsterName].cards, aliveMonsters.length > 0);
+                    acc[monsterName] = {...deck};
+                    state = {
+                        ...state,
+                        monsterDecks: {
+                            [monsterName]: deck
+                        }
+                    };
+                    return acc;
+                }, {});
             return {
                 ...defaultState,
-                ...Object.entries(action.party[1]).reduce((acc, [monsterName, monstersData]) => {
-                    const deck = newDeck(MONSTERS[monsterName].cards, false);
-                    acc[monsterName] = {...deck};
-                    return acc;
-                }, {}),
+                ...monsterDecks,
             };
         }
         case RESET_MONSTERS:
