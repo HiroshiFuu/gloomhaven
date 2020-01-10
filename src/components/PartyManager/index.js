@@ -92,12 +92,12 @@ class PartyManagerComponent extends React.Component {
                             this.setState({ partyNameInput: e.target.value })
                         }
                     />
-                    <button onClick={() => this.saveParty()}>Save Party</button>
+                    <button onClick={() => this.saveParty()}>保存团队</button>
                     <select
                         value={this.state.selectedParty}
                         onChange={event => this.selectParty(event.target.value)}
                     >
-                        <option value="">Select a party...</option>
+                        <option value="">选择一个团队</option>
                         {this.state.savedData &&
                             Object.keys(this.state.savedData).map(partyName => (
                                 <option value={partyName} key={partyName}>
@@ -109,13 +109,13 @@ class PartyManagerComponent extends React.Component {
                         disabled={!this.state.selectedParty}
                         onClick={() => this.loadParty()}
                     >
-                        Load Party
+                        读取团队
                     </button>
                     <button
                         disabled={!this.state.selectedParty}
                         onClick={() => this.deleteParty()}
                     >
-                        Delete Party
+                        删除团队
                     </button>
                 </div>
             </div>

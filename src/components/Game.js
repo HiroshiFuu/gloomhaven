@@ -298,7 +298,7 @@ class GameComponent extends React.Component {
                                             revealNextCards(deckNames)
                                         }
                                     >
-                                        Flip Cards
+                                        翻怪物行动卡
                                     </button>
                                     <EndTurnButton
                                         className={classNames({
