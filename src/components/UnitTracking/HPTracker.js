@@ -16,6 +16,7 @@ export class HPTracker extends React.Component {
     changeHP(hp) {
         // if clicking... this.setState({hp: hp <= this.state.hp ? hp - 1 : hp});
         this.setState({hp});
+        console.log('HPTracker changeHP', this.state, this.props, hp);
     }
 
     changeHPStart(hp) {

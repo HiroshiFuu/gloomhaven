@@ -83,3 +83,31 @@
     padding-left: 4px;
     padding-right: 8px;
 }
+
+.MonsterTracker--Name button {
+    margin-left: 4px;
+}
+
+.MonsterTracker--Monster--Controls button {
+    margin-left: 4px;
+}
+
+.MonsterTracker--Damage--Icon {
+    display: block;
+    cursor: pointer;
+}
+
+.MonsterTracker--Damage--Icon:hover {
+    transform: scale(1.1);
+}
+
+.MonsterTracker--Damage--Icon.damage-1 {
+    height: 24px;
+    width: 24px;
+    margin-top: 2px;
+}
+
+.MonsterTracker--Damage--Icon.damage-5 {
+    height: 28px;
+    width: 28px;
+}

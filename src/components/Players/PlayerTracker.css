@@ -1,5 +1,7 @@
 .PlayerTracker--Container {
     margin-right: 16px;
+    border: 1px solid black;
+    margin: 4px;
 }
 
 .PlayerTracker--Name {
@@ -14,6 +16,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 4px;
 }
 
 .PlayerTracker--Class {
@@ -38,6 +41,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-right: 4px;
     margin-bottom: 4px;
 }
 

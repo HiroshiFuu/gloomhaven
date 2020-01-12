@@ -68,34 +68,29 @@ class PlayerTrackerComponent extends React.Component {
                     {this.props.player.class}
                 </div>
                 <div className="PlayerTracker--Description">
-                    <button
-                        className="PlayerTracker--Summon--Button"
-                        onClick={() =>
-                            this.toggleSummonModal(!this.state.showSummonModal)
-                        }
-                    >
-                        Summon
-                    </button>
-                    {this.state.showSummonModal && (
-                        <SummonModal
-                            name={this.props.name}
-                            onClose={() => this.toggleSummonModal(false)}
-                        />
-                    )}
-                    <button
-                        className="PlayerTracker--Perks--Button"
-                        onClick={() =>
-                            this.togglePerksModal(!this.state.showPerksModal)
-                        }
-                    >
-                        Edit Deck
-                    </button>
-                    {this.state.showPerksModal && (
-                        <PerksModal
-                            name={this.props.name}
-                            onClose={() => this.togglePerksModal(false)}
-                        />
-                    )}
+                    <div className="PlayerTracker--Stats">
+                        <div className="PlayerTracker--XP">
+                            <img
+                                className="PlayerTracker--XP--Icon"
+                                src={xpIcon}
+                                alt="xp"
+                            />
+                            <div className="PlayerTracker--XP--Buttons">
+                                <button
+                                    disabled={this.state.xp === 0}
+                                    onClick={() => this.setXP(this.state.xp - 1)}
+                                >
+                                    -
+                                </button>
+                                {this.state.xp}
+                                <button
+                                    onClick={() => this.setXP(this.state.xp + 1)}
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div className="PlayerTracker--LevelSelector">
                         <label>
                             Level:
@@ -119,48 +114,6 @@ class PlayerTrackerComponent extends React.Component {
                             </select>
                         </label>
                     </div>
-                </div>
-                <div className="PlayerTracker">
-                    <div className="PlayerTracker--Stats">
-                        <div className="PlayerTracker--XP">
-                            <img
-                                className="PlayerTracker--XP--Icon"
-                                src={xpIcon}
-                                alt="xp"
-                            />
-                            <div className="PlayerTracker--XP--Buttons">
-                                <button
-                                    disabled={this.state.xp === 0}
-                                    onClick={() => this.setXP(this.state.xp - 1)}
-                                >
-                                    -
-                                </button>
-                                {this.state.xp}
-                                <button
-                                    onClick={() => this.setXP(this.state.xp + 1)}
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                        <BonusSelectors />
-                    </div>
-                    <StatusEffectTracker
-                        statusEffects={this.props.player.statusEffects}
-                        onToggle={s => this.props.toggleStatusEffect(s)}
-                    />
-                    {/* unique key on maxHP so that when the level changes the hp gets rerendered */}
-                    <HPTracker
-                        key={this.props.player.maxHP}
-                        currentHP={this.props.player.hp}
-                        maxHP={this.props.player.maxHP}
-                        onHPChange={hp =>
-                            this.props.player.hp !== hp && this.props.setHP(hp)
-                        }
-                    />
-                </div>
-                <div className="PlayerTracker--Summons">
-                    <SummonTrackers name={this.props.name} />
                 </div>
             </div>
         );

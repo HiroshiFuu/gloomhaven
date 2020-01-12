@@ -57,6 +57,7 @@ const SET_LEVEL = 'monsters/level/set';
 const TOGGLE_ALL_STATUS_EFFECTS = 'monsters/statusEffect/setAll';
 const TOGGLE_STATUS_EFFECT = 'monsters/statusEffect/toggle';
 const SET_HP = 'monsters/hp/set';
+const DEAL_DAMAGE = 'monsters/hp/damage';
 
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
@@ -241,6 +242,50 @@ export const reducer = (state = defaultState, action) => {
                 }
             };
         }
+        case DEAL_DAMAGE: {
+            const monsters = state.monsters[action.name].monsters;
+            const monster = monsters[action.index];
+            const currentHP = monster.currentHP - action.damage;
+            console.log('DEAL_DAMAGE', monster, monster.currentHP, action.damage, currentHP);
+            if (currentHP > 0) {
+                return {
+                    ...state,
+                    monsters: {
+                        ...state.monsters,
+                        [action.name]: {
+                            monsters: [
+                                ...monsters.slice(0, action.index),
+                                {
+                                    ...monster,
+                                    currentHP: currentHP
+                                },
+                                ...monsters.slice(action.index + 1)
+                            ]
+                        }
+                    }
+                };
+            }
+            else {
+                return {
+                    ...state,
+                    monsters: {
+                        ...state.monsters,
+                        [action.name]: {
+                            monsters: [
+                                ...monsters.slice(0, action.index),
+                                newMonster(
+                                    action.name,
+                                    monster.level,
+                                    !monster.alive,
+                                    monster.elite
+                                ),
+                                ...monsters.slice(action.index + 1)
+                            ]
+                        }
+                    }
+                };
+            }
+        }
         default:
             return state;
     }
@@ -272,6 +317,10 @@ export function toggleStatusEffectAction(dispatch, name, index, statusEffect) {
 
 export function setHPAction(dispatch, name, index, hp) {
     dispatch({ type: SET_HP, name, index, hp });
+}
+
+export function dealDamageAction(dispatch, name, index, damage) {
+    dispatch({ type: DEAL_DAMAGE, name, index, damage });
 }
 
 export const selectors = {

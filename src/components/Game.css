@@ -139,3 +139,12 @@ label.Game--Monsters--attackModifierDeckSelect {
     max-height: 0px;
     transition: opacity 3s linear, max-height 3s linear;
 }
+
+.Game--MonsterList--Button {
+    font-size: 1.3rem;
+}
+
+.MonsterDecks--Header--Button {
+    font-size: 1.7rem;
+    font-weight: 700;
+}

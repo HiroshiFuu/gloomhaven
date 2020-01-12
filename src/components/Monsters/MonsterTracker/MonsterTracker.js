@@ -11,11 +11,15 @@ import {
     toggleEliteAction,
     setLevelAction,
     toggleAllStatusEffectsAction,
+    dealDamageAction,
     selectors as monstersSelectors,
 } from "../../../store/monsters";
 import {selectors as playersSelectors, } from "../../../store/players";
 import {removeMonsterAction} from "../../../store/actions/monsters";
 import {toggleActiveAction} from "../../../store/monsterDecks";
+
+import damage1Icon from './damage-1.png';
+import damage5Icon from './damage-5.png';
 
 import "./MonsterTracker.css";
 
@@ -29,7 +33,7 @@ class MonsterTrackerComponent extends React.Component {
     }
 
     render() {
-        const {name, monsters, scenarioLevel, removeMonster, allStatusEffects, toggleElite, toggleAllStatusEffects} = this.props;
+        const {name, monsters, scenarioLevel, removeMonster, allStatusEffects, toggleElite, toggleAllStatusEffects, dealDamage} = this.props;
         const monsterStats = MONSTERS[name].stats[scenarioLevel];
         return (<div className="MonsterTracker--Container">
             <h5 className="MonsterTracker--Name">{name}<button onClick={() => removeMonster()}>X</button></h5>
@@ -75,18 +79,18 @@ class MonsterTrackerComponent extends React.Component {
                                     <button onClick={() => this.onToggleAlive(i)}>Kill</button>
                                     <button onClick={() => toggleElite(i)}>Normal/Elite</button>
                                 </div>
-                                {this.props.allowIndividualMonsterLevels && <div>
-                                    <span>Level:</span>
-                                    <select
-                                        value={level}
-                                        onChange={(event) => this.props.setLevel(i, parseInt(event.target.value, 10))}
-                                    >
-                                        {new Array(8).fill().map((_, level) => {
-                                            return (<option key={level} value={level}>{level}</option>);
-                                        })}
-                                    </select>
-                                </div>
-                                }
+                                <img
+                                    className="MonsterTracker--Damage--Icon damage-1"
+                                    src={damage1Icon}
+                                    alt="damage-1"
+                                    onClick={() => dealDamage(i, 1)}
+                                />
+                                <img
+                                    className="MonsterTracker--Damage--Icon damage-5"
+                                    src={damage5Icon}
+                                    alt="damage-5"
+                                    onClick={() => dealDamage(i, 5)}
+                                />
                             </div>
                             {alive && <Monster name={name} index={i} />}
                         </div>
@@ -113,9 +117,9 @@ export const MonsterTracker = connect(
             toggleAlive: (i) => toggleAliveAction(dispatch, ownProps.name, i),
             toggleElite: (i) => toggleEliteAction(dispatch, ownProps.name, i),
             toggleActive: (active) => {toggleActiveAction(dispatch, ownProps.name, active)},
-            setLevel: (i, level) => {setLevelAction(dispatch, ownProps.name, i, level)},
             toggleAllStatusEffects: (statusEffect) =>
                 toggleAllStatusEffectsAction(dispatch, ownProps.name, statusEffect),
+            dealDamage: (i, damage) => dealDamageAction(dispatch, ownProps.name, i, damage),
         };
     },
 )(MonsterTrackerComponent);
