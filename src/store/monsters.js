@@ -6,6 +6,7 @@ import {
     ADD_MONSTERS,
     REMOVE_MONSTER
 } from './actions/monsters';
+import { END_SCENARIO } from './actions/turn';
 
 function newMonster(name, level, alive, elite) {
     const monsterStats = MONSTERS[name].stats[level];
@@ -285,6 +286,9 @@ export const reducer = (state = defaultState, action) => {
                     }
                 };
             }
+        }        
+        case END_SCENARIO: {
+            return defaultState;
         }
         default:
             return state;

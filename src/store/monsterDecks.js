@@ -1,31 +1,38 @@
-import {shuffle} from "../lib/cards";
-import {MONSTERS, BOSS_CARDS} from "../lib/monsters";
-import {END_ACTIONS, needsShuffle} from "../lib/cards";
-import {RESET_MONSTERS, ADD_MONSTERS, REMOVE_MONSTER} from "./actions/monsters";
-import {LOAD_PARTY} from "./actions/party";
-import {SET_BOSS, REMOVE_BOSS} from "./actions/boss";
-import {END_TURN} from "./actions/turn";
+import { shuffle } from '../lib/cards';
+import { MONSTERS, BOSS_CARDS } from '../lib/monsters';
+import { END_ACTIONS, needsShuffle } from '../lib/cards';
+import {
+    RESET_MONSTERS,
+    ADD_MONSTERS,
+    REMOVE_MONSTER
+} from './actions/monsters';
+import { LOAD_PARTY } from './actions/party';
+import { SET_BOSS, REMOVE_BOSS } from './actions/boss';
+import { END_TURN } from './actions/turn';
+import { END_SCENARIO } from './actions/turn';
 
 function newDeck(cards, initialActive) {
     return {
-        ...shuffleDeck({cards}),
-        active: initialActive,
+        ...shuffleDeck({ cards }),
+        active: initialActive
     };
 }
 
-function shuffleDeck({cards}) {
+function shuffleDeck({ cards }) {
     return {
         cards: shuffle(cards),
         currentIndex: -1,
-        currentCard: null,
+        currentCard: null
     };
 }
 
-function revealNextCard({cards, currentIndex, currentCard}) {
+function revealNextCard({ cards, currentIndex, currentCard }) {
     let nextCards = cards;
     let nextIndex = currentIndex + 1;
-    if ((currentCard && currentCard.endAction === END_ACTIONS.SHUFFLE) ||
-        (nextIndex >= cards.length)) {
+    if (
+        (currentCard && currentCard.endAction === END_ACTIONS.SHUFFLE) ||
+        nextIndex >= cards.length
+    ) {
         nextCards = shuffle(cards);
         nextIndex = 0;
     }
@@ -34,28 +41,32 @@ function revealNextCard({cards, currentIndex, currentCard}) {
     return {
         cards: nextCards,
         currentIndex: nextIndex,
-        currentCard: nextCard,
+        currentCard: nextCard
     };
 }
 
 function hasActiveCards(decks) {
-    return Object.keys(decks).some((m) => decks[m].currentCard);
+    return Object.keys(decks).some(m => decks[m].currentCard);
 }
 
-const defaultState = {
-};
+const defaultState = {};
 
-const REVEAL_CARDS = "monsters/decks/next";
-const TOGGLE_ACTIVE = "monsters/decks/toggleActive";
+const REVEAL_CARDS = 'monsters/decks/next';
+const TOGGLE_ACTIVE = 'monsters/decks/toggleActive';
 
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
-        case LOAD_PARTY:
-        {
-            let monsterDecks = Object.entries(action.party[1]).reduce((acc, [monsterName, monstersData]) => {
-                    let aliveMonsters = monstersData.monsters.filter(monster => monster.alive);
-                    const deck = newDeck(MONSTERS[monsterName].cards, aliveMonsters.length > 0);
-                    acc[monsterName] = {...deck};
+        case LOAD_PARTY: {
+            let monsterDecks = Object.entries(action.party[1]).reduce(
+                (acc, [monsterName, monstersData]) => {
+                    let aliveMonsters = monstersData.monsters.filter(
+                        monster => monster.alive
+                    );
+                    const deck = newDeck(
+                        MONSTERS[monsterName].cards,
+                        aliveMonsters.length > 0
+                    );
+                    acc[monsterName] = { ...deck };
                     state = {
                         ...state,
                         monsterDecks: {
@@ -63,103 +74,113 @@ export const reducer = (state = defaultState, action) => {
                         }
                     };
                     return acc;
-                }, {});
+                },
+                {}
+            );
             return {
                 ...defaultState,
-                ...monsterDecks,
+                ...monsterDecks
             };
         }
-        case RESET_MONSTERS:
-        {
+        case RESET_MONSTERS: {
             return defaultState;
         }
-        case ADD_MONSTERS:
-        {
+        case ADD_MONSTERS: {
             return {
                 ...state,
                 ...action.monsters.reduce((acc, name) => {
                     const deck = newDeck(MONSTERS[name].cards, false);
-                    acc[name] = {...deck};
+                    acc[name] = { ...deck };
                     return acc;
-                }, {}),
+                }, {})
             };
         }
-        case REMOVE_MONSTER:
-        {
-            const newState = {...state};
+        case REMOVE_MONSTER: {
+            const newState = { ...state };
             delete newState[action.name];
             return newState;
         }
-        case SET_BOSS:
-        {
-            if (state["Boss"]) {
+        case SET_BOSS: {
+            if (state['Boss']) {
                 return state;
             }
             const deck = newDeck(BOSS_CARDS, true);
             return {
                 ...state,
-                "Boss": {
+                Boss: {
                     ...deck,
-                    ...(hasActiveCards(state, 'Boss') && revealNextCard(deck)),
-                },
+                    ...(hasActiveCards(state, 'Boss') && revealNextCard(deck))
+                }
             };
         }
-        case REMOVE_BOSS:
-        {
-            const newState = {...state};
-            delete newState["Boss"];
+        case REMOVE_BOSS: {
+            const newState = { ...state };
+            delete newState['Boss'];
             return newState;
         }
-        case REVEAL_CARDS:
-        {
+        case REVEAL_CARDS: {
             return Object.keys(state).reduce((acc, name) => {
                 const deck = state[name];
-                acc[name] = {...deck, ...(deck.active && revealNextCard(state[name]))};
+                acc[name] = {
+                    ...deck,
+                    ...(deck.active && revealNextCard(state[name]))
+                };
                 return acc;
             }, {});
         }
-        case TOGGLE_ACTIVE:
-        {
+        case TOGGLE_ACTIVE: {
             const deck = state[action.name];
-            let newDeck = {...deck, active: !deck.active, ...(deck.active ? {currentCard: null} : (hasActiveCards(state, 'TOGGLE_ACTIVE') && revealNextCard(deck)))};
+            let newDeck = {
+                ...deck,
+                active: !deck.active,
+                ...(deck.active
+                    ? { currentCard: null }
+                    : hasActiveCards(state, 'TOGGLE_ACTIVE') &&
+                      revealNextCard(deck))
+            };
             if (newDeck.active && hasActiveCards(state, 'TOGGLE_ACTIVE')) {
-                newDeck = {...newDeck, ...revealNextCard(deck)};
+                newDeck = { ...newDeck, ...revealNextCard(deck) };
             } else if (!newDeck.active) {
                 newDeck.currentCard = null;
             }
             return {
                 ...state,
-                [action.name]: newDeck,
+                [action.name]: newDeck
             };
         }
-        case END_TURN:
-        {
+        case END_TURN: {
             return Object.keys(state).reduce((acc, name) => {
                 const deck = state[name];
                 acc[name] = {
                     ...deck,
-                    ...(needsShuffle(deck) ? shuffleDeck(deck) : {currentCard: null}),
+                    ...(needsShuffle(deck)
+                        ? shuffleDeck(deck)
+                        : { currentCard: null })
                 };
                 return acc;
             }, {});
         }
-        default: return state
+        case END_SCENARIO: {
+            return defaultState;
+        }
+        default:
+            return state;
     }
-}
+};
 
 export function revealNextCardsAction(dispatch) {
-    dispatch({type: REVEAL_CARDS});
+    dispatch({ type: REVEAL_CARDS });
 }
 
 export function toggleActiveAction(dispatch, name) {
-    dispatch({type: TOGGLE_ACTIVE, name});
+    dispatch({ type: TOGGLE_ACTIVE, name });
 }
 
 export const selectors = {
-    hasActiveCards: (state) => {
+    hasActiveCards: state => {
         return hasActiveCards(state.monsterDecks);
     },
-    activeDecks: (state) => {
+    activeDecks: state => {
         const decks = state.monsterCards;
         return Object.keys(decks).reduce((acc, m) => {
             const deck = decks[m];
@@ -168,5 +189,5 @@ export const selectors = {
             }
             return acc;
         }, {});
-    },
+    }
 };

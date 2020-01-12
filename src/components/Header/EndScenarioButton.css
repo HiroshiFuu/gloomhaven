@@ -1,9 +1,9 @@
-.EndTurnButton--Modal--Buttons {
+.EndScenarioButton--Modal--Button {
     margin-top: 8px;
     display: flex;
     justify-content: center;
 }
 
-.EndTurnButton--Modal--Buttons button {
+.EndScenarioButton--Modal--Button button {
 	margin: 8px;
 }

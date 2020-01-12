@@ -39,10 +39,10 @@ export class EndTurnButton extends React.Component {
             >
                 {turn ?
                 <div>
-                    <div>結束回合</div>
+                    <div>结束回合</div>
                     <div>(回合： {turn})</div>
                 </div> :
-                "結束回合"
+                "结束回合"
                 }
             </button>
             <Modal isOpen={this.state.showWarning} contentLabel="End Turn" style={this.customStyles}>

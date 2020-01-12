@@ -144,7 +144,7 @@ class GameComponent extends React.Component {
                                         revealNextCards(deckNames)
                                     }
                                 >
-                                    翻怪物行動卡
+                                    翻怪物行动卡
                                 </button>
                                 <EndTurnButton
                                     className={classNames({
