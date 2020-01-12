@@ -28,6 +28,11 @@
 
 .PlayerTracker--LevelSelector {
     display: flex;
+    margin-top: -3px;
+}
+
+.PlayerTracker--LevelSelector select {
+    font-size: 1rem;
 }
 
 .PlayerTracker {

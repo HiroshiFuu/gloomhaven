@@ -17,6 +17,7 @@ import {
 } from '../../store/players';
 import { removePlayerAction } from '../../store/actions/players';
 import { selectors as monstersSelectors } from '../../store/monsters';
+import { getLevel } from '../../lib/players';
 
 import './PlayerTracker.css';
 
@@ -26,6 +27,7 @@ class PlayerTrackerComponent extends React.Component {
 
         this.state = {
             xp: this.props.player.xp,
+            level: this.props.player.level,
             showPerksModal: false,
             showSummonModal: false
         };
@@ -39,6 +41,15 @@ class PlayerTrackerComponent extends React.Component {
             xp
         });
         this.props.setXP(xp);
+        let level = getLevel(xp);
+        // this.setLevel(level);
+    }
+
+    setLevel(level) {
+        this.setState({
+            level
+        });
+        this.props.selectLevel(parseInt(level, 10));
     }
 
     togglePerksModal(showPerksModal) {
@@ -78,15 +89,26 @@ class PlayerTrackerComponent extends React.Component {
                             <div className="PlayerTracker--XP--Buttons">
                                 <button
                                     disabled={this.state.xp === 0}
-                                    onClick={() => this.setXP(this.state.xp - 1)}
+                                    onClick={() =>
+                                        this.setXP(this.state.xp - 1)
+                                    }
                                 >
-                                    -
+                                    -1
                                 </button>
                                 {this.state.xp}
                                 <button
-                                    onClick={() => this.setXP(this.state.xp + 1)}
+                                    onClick={() =>
+                                        this.setXP(this.state.xp + 1)
+                                    }
                                 >
-                                    +
+                                    +1
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        this.setXP(this.state.xp + 10)
+                                    }
+                                >
+                                    +10
                                 </button>
                             </div>
                         </div>
@@ -96,9 +118,9 @@ class PlayerTrackerComponent extends React.Component {
                             Level:
                             <select
                                 disabled={this.props.hasMonstersInPlay}
-                                value={this.props.player.level}
+                                value={this.state.level}
                                 onChange={event =>
-                                    this.props.selectLevel(
+                                    this.setLevel(
                                         parseInt(event.target.value, 10)
                                     )
                                 }
@@ -126,12 +148,12 @@ export const PlayerTracker = connect(
             player: state.players.players[ownProps.name],
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
             xp: state.players.players[ownProps.name].xp,
+            level: state.players.players[ownProps.name].level
         };
     },
     (dispatch, ownProps) => {
         return {
-            setXP: xp =>
-                setXPAction(dispatch, ownProps.name, xp),
+            setXP: xp => setXPAction(dispatch, ownProps.name, xp),
             selectLevel: level =>
                 setLevelAction(dispatch, ownProps.name, level),
             removePlayer: () => removePlayerAction(dispatch, ownProps.name),
