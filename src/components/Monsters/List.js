@@ -97,18 +97,21 @@ class ListComponent extends React.Component {
                         Add Boss
                     </button>
                 </div>
-                <input
+                {/*
+                    <input
                     value={this.state.search}
                     onChange={e => this.setState({ search: e.target.value })}
                     placeholder="search..."
                 />
+                */}
                 <select
-                    size="20"
+                    size="34"
                     onChange={e =>
                         this.handleMonsterSelection(e.target.options)
                     }
                     multiple
                     value={this.state.selectedMonsters}
+                    className="Monsters--List--Monsters"
                 >
                     {searchResults.map(name => (
                         <option

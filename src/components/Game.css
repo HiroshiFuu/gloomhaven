@@ -3,14 +3,15 @@
 }
 
 .Game--leftSection {
-    /*flex: 0 1 0px;*/
     margin-left: 4px;
-    width: 196px;
+    width: 50vw;
+    margin-right: 12px;
 }
 
 .Game--rightSection {
     margin-left: 12px;
-    width: 100%;
+    width: 50vw;
+    margin-right: 4px;
 }
 
 .Game--Section .Game--Section--Toggle {

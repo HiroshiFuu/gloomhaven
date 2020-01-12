@@ -109,81 +109,26 @@ class GameComponent extends React.Component {
                         >
                             <MonsterList />
                         </div>
-                        <h3
-                            className="Game--Section--Toggle"
-                            onClick={() =>
-                                this.toggleSection('attackModifierDecks')
-                            }
-                        >
-                            Attack Modifier Decks{' '}
-                            {/*<span className="Game--Section--ToggleSymbol">{this.state.showSections.attackModifierDecks ? "▾" : "▸"}</span>*/}
-                        </h3>
-                        <div
-                            className={classNames({
-                                'Game--Section--hideSection': !this.state
-                                    .showSections.attackModifierDecks
-                            })}
-                        >
-                            <div>
-                                <div className="Game--SpecialCardCount--Container">
-                                    祝福卡数：
-                                    <div className="Game--SpecialCardCount">
-                                        <img
-                                            className="Game--SpecialCardCount--Icon"
-                                            src={blessCard}
-                                            alt="blessing cards"
-                                        />
-                                        <div>{`(${this.props.totalBlessings})`}</div>
-                                    </div>
-                                </div>
-                                <div className="Game--SpecialCardCount--Container">
-                                    诅咒卡数：
-                                    <div className="Game--SpecialCardCount">
-                                        <img
-                                            className="Game--SpecialCardCount--Icon"
-                                            src={curseCard}
-                                            alt="curse cards"
-                                        />
-                                        <div>{`(${this.props.totalCurses})`}</div>
-                                    </div>
-                                </div>
+                        <div className="Game--Section">
+                            <h3
+                                className="Game--Section--Toggle"
+                                onClick={() => this.toggleSection('monsters')}
+                            >
+                                Monsters{' '}
+                                <span className="Game--Section--ToggleSymbol">
+                                    {this.state.showSections.monsters
+                                        ? '▾'
+                                        : '▸'}
+                                </span>
+                            </h3>
+                            <div
+                                className={classNames({
+                                    'Game--Section--hideSection': !this.state
+                                        .showSections.monsters
+                                })}
+                            >
+                                <MonsterTrackers />
                             </div>
-                            <div className="Game--AttackModifierDecks">
-                                {['Monsters']
-                                    .concat(this.props.playerNames)
-                                    .map(name => {
-                                        const selected =
-                                            this.state
-                                                .selectedAttackModifierDeck ===
-                                            name;
-                                        return (
-                                            <label
-                                                key={name}
-                                                className={classNames({
-                                                    'Game--Monsters--attackModifierDeckSelect': true,
-                                                    'Game--select': true,
-                                                    'Game--select--active': selected
-                                                })}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    checked={selected}
-                                                    onChange={() =>
-                                                        this.setState({
-                                                            selectedAttackModifierDeck: name
-                                                        })
-                                                    }
-                                                />
-                                                {name}
-                                            </label>
-                                        );
-                                    })}
-                            </div>
-                            {/* add key to redraw every time deck changes */}
-                            <AttackModifierDeck
-                                key={this.state.selectedAttackModifierDeck}
-                                name={this.state.selectedAttackModifierDeck}
-                            />
                         </div>
                     </div>
                     <div className="Game--rightSection">
@@ -207,27 +152,6 @@ class GameComponent extends React.Component {
                                 })}
                             >
                                 <PlayerTrackers />
-                            </div>
-                        </div>
-                        <div className="Game--Section">
-                            <h3
-                                className="Game--Section--Toggle"
-                                onClick={() => this.toggleSection('monsters')}
-                            >
-                                Monsters{' '}
-                                <span className="Game--Section--ToggleSymbol">
-                                    {this.state.showSections.monsters
-                                        ? '▾'
-                                        : '▸'}
-                                </span>
-                            </h3>
-                            <div
-                                className={classNames({
-                                    'Game--Section--hideSection': !this.state
-                                        .showSections.monsters
-                                })}
-                            >
-                                <MonsterTrackers />
                             </div>
                         </div>
                         <div className="Game--Section">
@@ -267,7 +191,7 @@ class GameComponent extends React.Component {
                                             this.setState({ showStats: false })
                                         }
                                     />
-                                    Hide stats
+                                    隱藏數據
                                 </label>
                                 <label
                                     className={classNames({
@@ -284,7 +208,7 @@ class GameComponent extends React.Component {
                                             this.setState({ showStats: true })
                                         }
                                     />
-                                    Show stats
+                                    顯示數據
                                 </label>
                                 <div className="MonsterDecks--Header">
                                     <button
@@ -298,7 +222,7 @@ class GameComponent extends React.Component {
                                             revealNextCards(deckNames)
                                         }
                                     >
-                                        翻怪物行动卡
+                                        翻怪物行動卡
                                     </button>
                                     <EndTurnButton
                                         className={classNames({
