@@ -9,7 +9,6 @@ import {StatusEffectTracker} from "../../UnitTracking/StatusEffectTracker";
 import {
     toggleAliveAction,
     toggleEliteAction,
-    setLevelAction,
     toggleAllStatusEffectsAction,
     dealDamageAction,
     selectors as monstersSelectors,

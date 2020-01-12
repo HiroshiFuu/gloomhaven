@@ -14,7 +14,7 @@ class PartyManagerComponent extends React.Component {
             partyNameInput: '',
             selectedParty: ''
         };
-        console.log('PartyManagerComponent', this.props);
+        // console.log('PartyManagerComponent', this.props);
     }
 
     saveParty() {

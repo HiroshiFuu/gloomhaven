@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 import xpIcon from './xp.svg';
 //import xpIcon from "./xp_white.svg";
-import { PerksModal } from './PerksModal';
-import { SummonModal } from './SummonModal';
-import { SummonTrackers } from '../Summons/SummonTrackers';
-import { BonusSelectors } from '../UnitTracking/BonusSelectors';
-import { StatusEffectTracker } from '../UnitTracking/StatusEffectTracker';
-import { HPTracker } from '../UnitTracking/HPTracker';
+// import { PerksModal } from './PerksModal';
+// import { SummonModal } from './SummonModal';
+// import { SummonTrackers } from '../Summons/SummonTrackers';
+// import { BonusSelectors } from '../UnitTracking/BonusSelectors';
+// import { StatusEffectTracker } from '../UnitTracking/StatusEffectTracker';
+// import { HPTracker } from '../UnitTracking/HPTracker';
 import {
     setXPAction,
     setLevelAction,
@@ -41,7 +41,7 @@ class PlayerTrackerComponent extends React.Component {
             xp
         });
         this.props.setXP(xp);
-        let level = getLevel(xp);
+        // let level = getLevel(xp);
         // this.setLevel(level);
     }
 

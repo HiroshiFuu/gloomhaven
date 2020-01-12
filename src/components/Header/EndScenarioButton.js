@@ -25,7 +25,7 @@ export class EndScenarioButton extends React.Component {
     }
 
     render() {
-        const { className, turn, endScenarioReady, endScenario } = this.props;
+        const { className, endScenarioReady, endScenario } = this.props;
         return (
             <React.Fragment>
                 <button

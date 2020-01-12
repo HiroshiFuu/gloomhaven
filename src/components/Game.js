@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 
 import { Header } from './Header/Header';
 import { PartyManager } from './PartyManager';
-import { List as MonsterList } from './Monsters/List';
+// import { List as MonsterList } from './Monsters/List';
 import { ListModal as MonstersListModal } from './Monsters/ListModal';
 import { PlayerTrackers } from './Players/PlayerTrackers';
 import { MonsterDecks } from './Monsters/MonsterDecks';
@@ -44,7 +44,7 @@ class GameComponent extends React.Component {
             showStats: true,
             showMonstersListModal: false,
         };
-        console.log('GameComponent', this.state);
+        // console.log('GameComponent', this.state);
     }
 
     toggleSection(section) {
