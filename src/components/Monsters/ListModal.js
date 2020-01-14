@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Modal from "react-modal"
+import Modal from 'react-modal';
 
 import { BOSS_LIST, MONSTER_LIST } from '../../lib/monsters';
 import {
@@ -21,21 +21,33 @@ class ListModalComponent extends React.Component {
         super(props);
 
         this.customStyles = {
-            content : {
-                top                   : '40px',
-                left                  : '40%',
-                right                 : 'auto',
-                bottom                : '10px',
-                marginRight           : '-50%',
-                padding               : '10px 20px',
-                overflowY             : 'hidden',
-              }
+            content: {
+                top: '40px',
+                left: '100px',
+                right: 'auto',
+                bottom: '10px',
+                padding: '10px 20px',
+                overflowY: 'hidden'
+            }
         };
 
         this.state = {
             selectedMonsters: [],
-            selectedBoss: BOSS_LIST[0]
+            selectedBoss: BOSS_LIST[0],
+            windowHeight: document.documentElement.clientHeight,
         };
+    }
+
+    _updateDimensions = () => {
+        this.setState({ windowHeight: document.documentElement.clientHeight });
+    };
+
+    componentDidMount() {
+        window.addEventListener('resize', this._updateDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this._updateDimensions);
     }
 
     selectBoss(boss) {
@@ -52,9 +64,24 @@ class ListModalComponent extends React.Component {
         this.setState({ selectedMonsters });
     }
 
+    calculateSelectSize() {
+        if (this.state.windowHeight > 170) {
+            let selectSize = (this.state.windowHeight - 170) / 20;
+            return selectSize;
+        }
+        else {
+            return 4;
+        }
+    }
+
     render() {
         return (
-            <Modal isOpen onRequestClose={() => this.props.onClose()} contentLabel="Monsters" style={this.customStyles}>
+            <Modal
+                isOpen
+                onRequestClose={() => this.props.onClose()}
+                contentLabel="Monsters"
+                style={this.customStyles}
+            >
                 <div className="Monsters--ListModal">
                     <div className="Monsters--ListModal--LevelContainer">
                         Level: {this.props.baseScenarioLevel}
@@ -77,12 +104,15 @@ class ListModalComponent extends React.Component {
                                 </option>
                             ))}
                         </select>
+                        <button className="Monsters--ListModal--Button" onClick={() => this.props.onClose()}>Close</button>
                     </div>
                     <div className="Monsters--ListModal--BossSelectorContainer">
                         <select
                             disabled={this.props.hasBoss}
                             value={this.state.selectedBoss}
-                            onChange={event => this.selectBoss(event.target.value)}
+                            onChange={event =>
+                                this.selectBoss(event.target.value)
+                            }
                         >
                             {BOSS_LIST.map(b => (
                                 <option value={b} key={b}>
@@ -104,7 +134,7 @@ class ListModalComponent extends React.Component {
                         </button>
                     </div>
                     <select
-                        size="19"
+                        size={this.calculateSelectSize()}
                         onChange={e =>
                             this.handleMonsterSelection(e.target.options)
                         }
@@ -113,7 +143,13 @@ class ListModalComponent extends React.Component {
                         className="Monsters--ListModal--Monsters"
                     >
                         {MONSTER_LIST.map(name => (
-                            <option value={name} key={name} disabled={this.props.monstersInPlay.includes(name)}>
+                            <option
+                                value={name}
+                                key={name}
+                                disabled={this.props.monstersInPlay.includes(
+                                    name
+                                )}
+                            >
                                 {name}
                             </option>
                         ))}
@@ -129,7 +165,9 @@ class ListModalComponent extends React.Component {
                         Add Monster(s)
                     </button>
                     {this.props.numPlayers === 0 && (
-                        <div className="Monsters--ListModal--Cover">Add Players</div>
+                        <div className="Monsters--ListModal--Cover">
+                            Add Players
+                        </div>
                     )}
                 </div>
             </Modal>
@@ -161,6 +199,7 @@ export const ListModal = connect(
             },
             addMonsters: (monsterNames, scenarioLevel) => {
                 addMonstersAction(dispatch, monsterNames, scenarioLevel);
+                ownProps.onClose();
             },
             resetMonsters: monsterNames => {
                 resetMonstersAction(dispatch, monsterNames);

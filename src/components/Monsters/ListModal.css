@@ -37,4 +37,9 @@
 
 .Monsters--ListModal--Monsters {
     font-size: 1rem;
+    width: 20vw;
+}
+
+.Monsters--ListModal--Button {
+    margin-left: auto;
 }
