@@ -19,9 +19,23 @@ import { removePlayerAction } from '../../store/actions/players';
 import { selectors as monstersSelectors } from '../../store/monsters';
 import { getLevel } from '../../lib/players';
 
+import BruteIcon from './Brute.jpg';
+import CragheartIcon from './Cragheart.jpg';
+import MindthiefIcon from './Mindthief.jpg';
+import ScoundrelIcon from './Scoundrel.jpg';
+import SpellweaverIcon from './Spellweaver.jpg';
+import TinkererIcon from './Tinkerer.jpg';
+
 import './PlayerTracker.css';
 
-const ESCAPE_KEY = 27;
+const CLASS_ICON_MAPPING = {
+    Brute: BruteIcon,
+    Cragheart: CragheartIcon,
+    Mindthief: MindthiefIcon,
+    Scoundrel: ScoundrelIcon,
+    Spellweaver: SpellweaverIcon,
+    Tinkerer: TinkererIcon
+};
 
 class PlayerTrackerComponent extends React.Component {
     constructor(props) {
@@ -30,7 +44,7 @@ class PlayerTrackerComponent extends React.Component {
         this.state = {
             xp: this.props.player.xp,
             level: this.props.player.level,
-            nextLevel: this.props.player.level,
+            nextLevel: this.props.player.level
         };
     }
 
@@ -65,6 +79,7 @@ class PlayerTrackerComponent extends React.Component {
     }
 
     render() {
+        console.log(CLASS_ICON_MAPPING[this.props.player.class]);
         return (
             <div className="PlayerTracker--Container">
                 <h5 className="PlayerTracker--Name">
@@ -76,7 +91,12 @@ class PlayerTrackerComponent extends React.Component {
                     )}
                 </h5>
                 <div className="PlayerTracker--Class">
-                    {this.props.player.class}
+                    {this.props.player.class}{' '}
+                    <img
+                        className="PlayerTracker--Class--Icon"
+                        src={CLASS_ICON_MAPPING[this.props.player.class]}
+                        alt="icon"
+                    />
                 </div>
                 <div className="PlayerTracker--Description">
                     <div className="PlayerTracker--Stats">
@@ -107,7 +127,7 @@ class PlayerTrackerComponent extends React.Component {
                                 >
                                     +
                                 </button>
-                                L:{this.state.nextLevel} 
+                                L:{this.state.nextLevel}
                             </div>
                         </div>
                     </div>
@@ -147,7 +167,7 @@ export const PlayerTracker = connect(
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
             xp: state.players.players[ownProps.name].xp,
             level: state.players.players[ownProps.name].level,
-            nextLevel: state.players.players[ownProps.name].level,
+            nextLevel: state.players.players[ownProps.name].level
         };
     },
     (dispatch, ownProps) => {

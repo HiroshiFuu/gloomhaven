@@ -13,7 +13,7 @@ function newPlayer(characterClass, level, xp=0) {
         maxHP: stats.maxHP,
         statusEffects: newStatusEffectTracker(),
         initiative: null,
-        xp: xp
+        xp: xp,
     };
 }
 

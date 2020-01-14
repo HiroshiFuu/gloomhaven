@@ -2,3 +2,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.PlayerTracker--Class--Icon {
+	width: 12px;
+}
