@@ -13,4 +13,5 @@ export function getLevel(xp) {
 		if (XPtable[i - 1] <= xp)
 			return i;
 	}
+	return 0;
 }

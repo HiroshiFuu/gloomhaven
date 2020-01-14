@@ -53,6 +53,7 @@ class MonsterTrackerComponent extends React.Component {
                                 className={classNames({
                                     "MonsterTracker--MonsterSelector": true,
                                     "MonsterTracker--MonsterSelector--Alive": !alive,
+                                    "MonsterTracker--MonsterSelector--Narrow": i + 1 >= 10,
                                 })}
                                 onClick={() => this.onToggleAlive(i)}
                             >

@@ -10,6 +10,8 @@
 
 .MonsterTracker--Name {
     text-align: center;
+    font-size: 1rem;
+    margin-top: 2px;
 }
 
 .MonsterTracker--StatsContainer {
@@ -49,6 +51,8 @@
 
 .MonsterTracker--MonsterSelectors {
     display: flex;
+    margin-left: -0.5px;
+    margin-bottom: -0.25px;
 }
 
 .MonsterTracker--MonsterSelector {
@@ -57,6 +61,11 @@
 
 .MonsterTracker--MonsterSelector--Alive {
     font-weight: 800;
+}
+
+.MonsterTracker--MonsterSelector--Narrow {
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 .MonsterTracker--Monster {
@@ -82,6 +91,7 @@
     font-weight: 900;
     padding-left: 4px;
     padding-right: 8px;
+    font-size: 1.2rem;
 }
 
 .MonsterTracker--Name button {
@@ -90,6 +100,7 @@
 
 .MonsterTracker--Monster--Controls button {
     margin-left: 4px;
+    vertical-align: text-bottom;
 }
 
 .MonsterTracker--Damage--Icon {
@@ -98,7 +109,7 @@
 }
 
 .MonsterTracker--Damage--Icon:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
 }
 
 .MonsterTracker--Damage--Icon.damage-1 {

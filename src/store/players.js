@@ -88,7 +88,7 @@ export const reducer = (state = defaultState, action) => {
         case SET_XP: {
             const player = state.players[action.name];
             player.xp = action.xp;
-            console.log('SET_XP', player);
+            // console.log('SET_XP', player);
             return {
                 ...state,
                 players: {
