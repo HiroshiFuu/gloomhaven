@@ -118,13 +118,13 @@ class GameComponent extends React.Component {
                                         : '▸'}
                                 </span>
                             </h3>
-                            <PartyManager />
                             <div
                                 className={classNames({
                                     'Game--Section--hideSection': !this.state
                                         .showSections.players
                                 })}
                             >
+                                <PartyManager />
                                 <PlayerTrackers />
                             </div>
                         </div>
