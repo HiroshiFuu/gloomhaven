@@ -1,7 +1,6 @@
 .PlayerTracker--Container {
-    margin-right: 16px;
     border: 1px solid black;
-    margin: 4px;
+    margin: 4px 8px 4px 0px;
 }
 
 .PlayerTracker--Name {
@@ -36,10 +35,10 @@
 }
 
 .PlayerTracker {
-    width: 235px;
-    border: 1px solid black;
+    width: 231px;
+    /*border: 1px solid black;*/
     margin-top: 4px;
-    padding: 8px;
+    padding: 4px;
 }
 
 .PlayerTracker--Stats {

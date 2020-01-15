@@ -8,7 +8,7 @@ import xpIcon from './xp.svg';
 // import { SummonTrackers } from '../Summons/SummonTrackers';
 // import { BonusSelectors } from '../UnitTracking/BonusSelectors';
 // import { StatusEffectTracker } from '../UnitTracking/StatusEffectTracker';
-// import { HPTracker } from '../UnitTracking/HPTracker';
+import { HPTracker } from '../UnitTracking/HPTracker';
 import {
     setXPAction,
     setLevelAction,
@@ -56,14 +56,20 @@ class PlayerTrackerComponent extends React.Component {
             xp
         });
         this.props.setXP(xp);
-        this.setLevel(getLevel(xp));
+        this.setNextLevel(getLevel(xp));
     }
 
-    setLevel(nextLevel) {
+    setNextLevel(nextLevel) {
         this.setState({
             nextLevel
         });
-        // this.props.selectLevel(parseInt(level, 10));
+    }
+
+    setLevel(level) {
+        this.setState({
+            level
+        });
+        this.props.selectLevel(parseInt(level, 10));
     }
 
     togglePerksModal(showPerksModal) {
@@ -154,6 +160,16 @@ class PlayerTrackerComponent extends React.Component {
                             </select>
                         </label>
                     </div>
+                </div>
+                <div className="PlayerTracker">
+                    <HPTracker
+                        key={this.props.player.maxHP}
+                        currentHP={this.props.player.hp}
+                        maxHP={this.props.player.maxHP}
+                        onHPChange={hp =>
+                            this.props.player.hp !== hp && this.props.setHP(hp)
+                        }
+                    />
                 </div>
             </div>
         );
