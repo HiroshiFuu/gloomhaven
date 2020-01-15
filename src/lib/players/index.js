@@ -11,7 +11,7 @@ const XPtable = getXPtable();
 export function getLevel(xp) {
 	for (let i = 9; i > 0; i--) {
 		if (XPtable[i - 1] <= xp)
-			return i;
+			return i + 1;
 	}
-	return 0;
+	return 1;
 }

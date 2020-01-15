@@ -53,7 +53,7 @@ class PlayerTrackerComponent extends React.Component {
             return;
         }
         this.setState({
-            xp
+            xp: xp
         });
         this.props.setXP(xp);
         this.setNextLevel(getLevel(xp));
@@ -61,13 +61,13 @@ class PlayerTrackerComponent extends React.Component {
 
     setNextLevel(nextLevel) {
         this.setState({
-            nextLevel
+            nextLevel: nextLevel
         });
     }
 
     setLevel(level) {
         this.setState({
-            level
+            level: level
         });
         this.props.selectLevel(parseInt(level, 10));
     }
