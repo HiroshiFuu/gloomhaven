@@ -85,7 +85,6 @@ class PlayerTrackerComponent extends React.Component {
     }
 
     render() {
-        console.log(CLASS_ICON_MAPPING[this.props.player.class]);
         return (
             <div className="PlayerTracker--Container">
                 <h5 className="PlayerTracker--Name">

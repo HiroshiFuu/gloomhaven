@@ -45,7 +45,6 @@ class AddPlayerComponent extends React.Component {
             return;
         }
         this.props.addPlayer(name, characterClass, level);
-        console.log('addPlayer', this.state);
     }
 
     render() {

@@ -1,8 +1,8 @@
-import {STATUS_EFFECTS} from "../lib/statusEffects";
-import {BOSS_STATS} from "../lib/monsters";
-import {LOAD_PARTY} from "./actions/party";
-import {SET_BOSS, REMOVE_BOSS} from "./actions/boss";
-import {RESET_MONSTERS} from "./actions/monsters";
+import { STATUS_EFFECTS } from '../lib/statusEffects';
+import { BOSS_STATS } from '../lib/monsters';
+import { LOAD_PARTY } from './actions/party';
+import { SET_BOSS, REMOVE_BOSS } from './actions/boss';
+import { RESET_MONSTERS } from './actions/monsters';
 
 function newBoss(name, level, numPlayers) {
     const stats = BOSS_STATS[name][level](numPlayers);
@@ -13,41 +13,41 @@ function newBoss(name, level, numPlayers) {
         statusEffects: STATUS_EFFECTS.reduce((acc, s) => {
             acc[s] = false;
             return acc;
-        }, {}),
+        }, {})
     };
 }
 
 const defaultState = null;
+const DEAL_DAMAGE = 'boss/hp/damage';
 
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
-        case LOAD_PARTY:
-        {
+        case LOAD_PARTY: {
             return defaultState;
         }
-        case RESET_MONSTERS:
-        {
+        case RESET_MONSTERS: {
             return defaultState;
         }
-        case SET_BOSS:
-        {
-            if (action.name === "Inox Bodyguard") {
+        case SET_BOSS: {
+            if (action.name === 'Inox Bodyguard') {
                 return [
                     newBoss(action.name, action.level, action.numPlayers),
-                    newBoss(action.name, action.level, action.numPlayers),
+                    newBoss(action.name, action.level, action.numPlayers)
                 ];
             }
-            return [
-                newBoss(action.name, action.level, action.numPlayers),
-            ];
+            return [newBoss(action.name, action.level, action.numPlayers)];
         }
-        case REMOVE_BOSS:
-        {
+        case REMOVE_BOSS: {
             return defaultState;
         }
-        default: return state;
+        default:
+            return state;
     }
+};
+
+export function dealDamageAction(dispatch, name, damage) {
+    console.log(name, damage);
+    dispatch({ type: DEAL_DAMAGE, name, damage });
 }
 
-export const selectors = {
-};
+export const selectors = {};
