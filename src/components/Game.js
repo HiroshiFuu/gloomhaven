@@ -85,6 +85,7 @@ class GameComponent extends React.Component {
                             onClick={() =>
                                 this.toggleMonstersListModal(!this.state.showMonstersListModal)
                             }
+                            disabled={this.props.numPlayers === 0}
                         >
                             Add Monsters
                         </button>
@@ -181,7 +182,8 @@ export const Game = connect(
             playerNames: Object.keys(state.players.players),
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
             decks: state.monsterDecks,
-            hasActiveCards: monstersDecksSelectors.hasActiveCards(state)
+            hasActiveCards: monstersDecksSelectors.hasActiveCards(state),
+            numPlayers: playersSelectors.numPlayers(state),
         };
     },
     (dispatch, ownProps) => ({

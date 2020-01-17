@@ -61,6 +61,7 @@ export const reducer = (state = defaultState, action) => {
                 }
             }
             else {
+                action.asyncDispatch({ type: "monsters/boss/remove" });
                 return defaultState;
             }
         }
