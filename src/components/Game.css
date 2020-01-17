@@ -14,7 +14,7 @@
     margin-right: 4px;
 }
 
-.Game--Section .Game--Section--Toggle {
+.Game--Section h3 {
     margin-top: 2px;
 }
 
@@ -142,9 +142,13 @@ label.Game--Monsters--attackModifierDeckSelect {
 
 .Game--MonsterList--Button {
     font-size: 1.3rem;
+    cursor: pointer;
+    user-select: none;
 }
 
 .MonsterDecks--Header--Button {
     font-size: 1.7rem;
     font-weight: 700;
+    cursor: pointer;
+    user-select: none;
 }

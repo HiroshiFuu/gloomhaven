@@ -77,7 +77,7 @@ class GameComponent extends React.Component {
                 <div className="Game--container">
                     <div className="Game--leftSection">
                         <div className="Game--Section">
-                            <h3 className="Game--Section--Toggle">
+                            <h3>
                                 Monsters{' '}
                                 <button
                                     className="Game--MonsterList--Button"
@@ -133,7 +133,7 @@ class GameComponent extends React.Component {
                             </div>
                         </div>
                         <div className="Game--Section">
-                            <h3 className="Game--Section--Toggle">
+                            <h3>
                                 Monster Cards{' '}
                                 <button
                                     className="MonsterDecks--Header--Button"
