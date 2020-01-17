@@ -1,32 +1,25 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import * as classNames from 'classnames';
+import React from "react";
+import { connect } from "react-redux";
+import * as classNames from "classnames";
 
-import { BOSS_STATS } from '../../../lib/monsters';
-import { STATUS_EFFECTS } from '../../../lib/statusEffects';
-import { HPTracker } from '../../UnitTracking/HPTracker';
-import { StatusEffectTracker } from '../../UnitTracking/StatusEffectTracker';
-import { MonsterStats } from './MonsterStats';
-import { iconForStatusEffect } from '../../../lib/statusEffects';
-import { selectors as playersSelectors } from '../../../store/players';
-import { removeBossAction } from '../../../store/actions/boss';
-import { dealDamageAction } from '../../../store/boss';
+import { BOSS_STATS } from "../../../lib/monsters";
+import { STATUS_EFFECTS } from "../../../lib/statusEffects";
+import { HPTracker } from "../../UnitTracking/HPTracker";
+import { HPTrackerFunction } from "../../UnitTracking/HPTrackerFunction";
+import { StatusEffectTracker } from "../../UnitTracking/StatusEffectTracker";
+import { MonsterStats } from "./MonsterStats";
+import { iconForStatusEffect } from "../../../lib/statusEffects";
+import { selectors as playersSelectors } from "../../../store/players";
+import { removeBossAction } from "../../../store/actions/boss";
+import { dealDamageAction } from "../../../store/boss";
 
-import damage1Icon from './damage-1.png';
-import damage5Icon from './damage-5.png';
+import damage1Icon from "./damage-1.png";
+import damage5Icon from "./damage-5.png";
+import healIcon from './heal.png';
 
-import './MonsterTracker.css';
+import "./MonsterTracker.css";
 
 export class BossMonsterTrackerComponent extends React.Component {
-    onToggleAlive(index) {
-        const activeChange = this.props.monsters
-            .filter((_, i) => i !== index)
-            .every(m => !m.alive);
-        if (activeChange) {
-            this.props.toggleActive(this.props.name);
-        }
-        this.props.toggleAlive(index);
-    }
 
     constructor(props) {
         super(props);
@@ -37,7 +30,6 @@ export class BossMonsterTrackerComponent extends React.Component {
         }, {});
         this.state = {
             statusEffects,
-            boss: this.props.boss,
         };
     }
 
@@ -50,11 +42,20 @@ export class BossMonsterTrackerComponent extends React.Component {
         });
     }
 
+    dealDamageBoss(index, damage) {
+        this.props.dealDamage(index, damage);
+        this.forceUpdate();
+    }
+
+    killBoss(name) {
+        this.props.removeBoss(name);
+    }
+
     render() {
-        const { dealDamage } = this.props;
-        const stats = BOSS_STATS[this.props.boss.name][
-            this.props.scenarioLevel
-        ](this.props.numPlayers);
+        const { index, dealDamage, boss } = this.props;
+        const stats = BOSS_STATS[boss.name][this.props.scenarioLevel](
+            this.props.numPlayers
+        );
         return (
             <div className="MonsterTracker--Container">
                 <h5 className="MonsterTracker--Name">
@@ -75,8 +76,8 @@ export class BossMonsterTrackerComponent extends React.Component {
                         />
                         <div
                             className={classNames(
-                                'MonsterTracker--Boss--Stats',
-                                'MonsterTracker--Boss--ImmunitiesContainer'
+                                "MonsterTracker--Boss--Stats",
+                                "MonsterTracker--Boss--ImmunitiesContainer"
                             )}
                         >
                             <div>Immunities:</div>
@@ -99,35 +100,44 @@ export class BossMonsterTrackerComponent extends React.Component {
                     </div>
                     <div className="MonsterTracker--Monster">
                         <div className="MonsterTracker--Monster--Controls">
-                            <div>
-                                <button onClick={() => this.onToggleAlive()}>
-                                    Kill
-                                </button>
+                            <div className="MonsterTracker--Monster--Kill">
+                                <div>
+                                    <button onClick={() => this.killBoss(boss.name)}>
+                                        Kill
+                                    </button>
+                                </div>
                             </div>
-                            <img
-                                className="MonsterTracker--Damage--Icon damage-1"
-                                src={damage1Icon}
-                                alt="damage-1"
-                                onClick={() => dealDamage(1)}
-                            />
-                            <img
-                                className="MonsterTracker--Damage--Icon damage-5"
-                                src={damage5Icon}
-                                alt="damage-5"
-                                onClick={() => dealDamage(5)}
-                            />
+                            <div className="MonsterTracker--Monster--HP">
+                                <img
+                                    className="MonsterTracker--Heal--Icon"
+                                    src={healIcon}
+                                    alt="heal"
+                                    onClick={() => this.dealDamageBoss(this.props.index, -1)}
+                                />
+                                <img
+                                    className="MonsterTracker--Damage--Icon damage-1"
+                                    src={damage1Icon}
+                                    alt="damage-1"
+                                    onClick={() =>
+                                        this.dealDamageBoss(this.props.index, 1)
+                                    }
+                                />
+                                <img
+                                    className="MonsterTracker--Damage--Icon damage-5"
+                                    src={damage5Icon}
+                                    alt="damage-5"
+                                    onClick={() =>
+                                        this.dealDamageBoss(this.props.index, 5)
+                                    }
+                                />
+                            </div>
                         </div>
                         <StatusEffectTracker
                             statusEffects={this.state.statusEffects}
                             immunities={stats.immunities}
                             onToggle={s => this.toggleStatusEffect(s)}
                         />
-                        {/* set unique key so it rerenders on maxHP change */}
-                        <HPTracker
-                            key={stats.maxHP}
-                            maxHP={stats.maxHP}
-                            onHPChange={hp => {}}
-                        />
+                        <HPTrackerFunction monsterData={this.props.boss} />
                         {this.props.numPlayers === 0 && (
                             <div className="MonsterTracker--Boss--Cover">
                                 Add players
@@ -141,7 +151,7 @@ export class BossMonsterTrackerComponent extends React.Component {
 }
 
 export const BossMonsterTracker = connect(
-    state => {
+    (state, ownProps) => {
         return {
             numPlayers: playersSelectors.numPlayers(state),
             scenarioLevel: playersSelectors.scenarioLevel(state),
@@ -150,8 +160,8 @@ export const BossMonsterTracker = connect(
     (dispatch, ownProps) => {
         return {
             removeBoss: name => removeBossAction(dispatch, name),
-            dealDamage: (damage) => {
-                dealDamageAction(dispatch, ownProps.boss.name, damage)
+            dealDamage: (index, damage) => {
+                dealDamageAction(dispatch, index, damage);
             }
         };
     }

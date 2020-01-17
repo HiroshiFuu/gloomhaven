@@ -40,14 +40,37 @@ export const reducer = (state = defaultState, action) => {
         case REMOVE_BOSS: {
             return defaultState;
         }
+        case DEAL_DAMAGE: {
+            var boss = state[action.index];
+            var currentHP = boss.currentHP - action.damage;
+            if (currentHP > boss.maxHP) {
+                return state;
+            }
+            if (currentHP > 0) {
+                boss.currentHP = currentHP;
+                if (state.length === 1) {
+                    return [boss];
+                }
+                else {
+                    if (action.index === 0) {
+                        return [boss, state[1]]
+                    }
+                    else {
+                        return [state[0], boss]
+                    }
+                }
+            }
+            else {
+                return defaultState;
+            }
+        }
         default:
             return state;
     }
 };
 
-export function dealDamageAction(dispatch, name, damage) {
-    console.log(name, damage);
-    dispatch({ type: DEAL_DAMAGE, name, damage });
+export function dealDamageAction(dispatch, index, damage) {
+    dispatch({ type: DEAL_DAMAGE, index, damage });
 }
 
 export const selectors = {};
