@@ -22,6 +22,10 @@
     flex-direction: column;
 }
 
+.Monsters--ListModal--BossSelectorContainer select {
+
+}
+
 .Monsters--ListModal--Cover {
     position: absolute;
     top: 0;
