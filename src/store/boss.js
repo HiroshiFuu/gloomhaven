@@ -62,7 +62,7 @@ export const reducer = (state = defaultState, action) => {
                 }
             }
             else {
-                if (state[1 - action.index] !== undefined) {
+                if (state.length === 2) {
                     return [state[1 - action.index]];
                 }
                 else {

@@ -1,5 +1,5 @@
 .Header {
-    height: 36px;
+    height: 54px;
     width: 100%;
     /*background-color: rgb(235, 159, 72);*/
     background-color: white;
@@ -18,9 +18,10 @@
 }
 
 .Header--EndTurnButton {
-    height: 36px;
+    height: 54px;
     background-color: inherit;
     flex: auto;
+    font-size: 1.2rem;
 }
 
 .Header--EndTurnButton--Ready {
@@ -29,8 +30,9 @@
 }
 
 .Header--EndScenarioButton {
-    height: 36px;
     /*background-color: inherit;*/
+    height: 54px;
+    font-size: 1.2rem;
 }
 
 @keyframes pulse {
@@ -43,7 +45,7 @@
 }
 
 .Header--HeightOffset {
-    height: 36px;
+    height: 54px;
 }
 
 .Header--TurnTracker {
