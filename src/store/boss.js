@@ -54,16 +54,21 @@ export const reducer = (state = defaultState, action) => {
                 }
                 else {
                     if (action.index === 0) {
-                        return [boss, state[1]]
+                        return [boss, state[1]];
                     }
                     else {
-                        return [state[0], boss]
+                        return [state[0], boss];
                     }
                 }
             }
             else {
-                action.asyncDispatch({ type: "monsters/boss/remove" });
-                return defaultState;
+                if (state[1 - action.index] !== undefined) {
+                    return [state[1 - action.index]];
+                }
+                else {
+                    action.asyncDispatch({ type: "monsters/boss/remove" });
+                    return defaultState;
+                }
             }
         }
         case END_SCENARIO: {
