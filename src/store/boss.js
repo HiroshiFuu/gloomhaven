@@ -3,6 +3,7 @@ import { BOSS_STATS } from '../lib/monsters';
 import { LOAD_PARTY } from './actions/party';
 import { SET_BOSS, REMOVE_BOSS } from './actions/boss';
 import { RESET_MONSTERS } from './actions/monsters';
+import { END_SCENARIO } from './actions/turn';
 
 function newBoss(name, level, numPlayers) {
     const stats = BOSS_STATS[name][level](numPlayers);
@@ -38,6 +39,9 @@ export const reducer = (state = defaultState, action) => {
             return [newBoss(action.name, action.level, action.numPlayers)];
         }
         case REMOVE_BOSS: {
+            return defaultState;
+        }
+        case END_SCENARIO: {
             return defaultState;
         }
         default:

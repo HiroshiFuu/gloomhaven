@@ -286,7 +286,7 @@ export const reducer = (state = defaultState, action) => {
                     }
                 };
             }
-        }        
+        }
         case END_SCENARIO: {
             return defaultState;
         }
