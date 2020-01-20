@@ -19,6 +19,7 @@ import { toggleActiveAction } from '../../../store/monsterDecks';
 
 import damage1Icon from './damage-1.png';
 import damage5Icon from './damage-5.png';
+import healIcon from './heal.png';
 
 import './MonsterTracker.css';
 
@@ -132,6 +133,12 @@ class MonsterTrackerComponent extends React.Component {
                                                     Normal/Elite
                                                 </button>
                                             </div>
+                                            <img
+                                                className="MonsterTracker--Heal--Icon"
+                                                src={healIcon}
+                                                alt="heal"
+                                                onClick={() => dealDamage(i, -1)}
+                                            />
                                             <img
                                                 className="MonsterTracker--Damage--Icon damage-1"
                                                 src={damage1Icon}

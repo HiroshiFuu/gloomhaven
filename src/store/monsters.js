@@ -246,8 +246,13 @@ export const reducer = (state = defaultState, action) => {
         case DEAL_DAMAGE: {
             const monsters = state.monsters[action.name].monsters;
             const monster = monsters[action.index];
-            const currentHP = monster.currentHP - action.damage;
-            console.log('DEAL_DAMAGE', monster, monster.currentHP, action.damage, currentHP);
+            var currentHP = monster.currentHP - action.damage;
+            if (currentHP > monster.maxHP) {
+                return {
+                    ...state,
+                }
+            }
+            // console.log('DEAL_DAMAGE', monster, monster.currentHP, action.damage, currentHP);
             if (currentHP > 0) {
                 return {
                     ...state,

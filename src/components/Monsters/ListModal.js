@@ -196,6 +196,7 @@ export const ListModal = connect(
                 toggleAllowIndividualMonsterLevels(dispatch),
             addBoss: (name, scenarioLevel, numPlayers) => {
                 setBossAction(dispatch, name, scenarioLevel, numPlayers);
+                ownProps.onClose();
             },
             addMonsters: (monsterNames, scenarioLevel) => {
                 addMonstersAction(dispatch, monsterNames, scenarioLevel);

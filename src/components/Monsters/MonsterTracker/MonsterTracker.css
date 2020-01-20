@@ -122,3 +122,25 @@
     height: 28px;
     width: 28px;
 }
+
+.MonsterTracker--Heal--Icon {
+    display: block;
+    cursor: pointer;
+    height: 24px;
+    width: 16px;
+}
+
+.MonsterTracker--Heal--Icon:hover {
+    transform: scale(1.1);
+}
+
+.MonsterTracker--Monster--HP {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 8px;
+    width: 80px;
+}
+
+.MonsterTracker--Monster--Kill button {
+    width: 80px;
+}

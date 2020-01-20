@@ -7,6 +7,7 @@ export function HPTrackerFunction({ monsterData }) {
     let monster = monsterData;
     const maxHP = monster.maxHP;
     const currentHP = monster.currentHP;
+    // console.log('HPTrackerFunction', monsterData);
     return (
         <div className={classNames('HPTracker--Container')}>
             {maxHP > 0 && (

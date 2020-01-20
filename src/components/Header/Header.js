@@ -15,7 +15,6 @@ function HeaderComponent({
     turn,
     endTurnReady,
     endTurn,
-    endScenarioReady,
     endScenario
 }) {
     return (
@@ -35,9 +34,7 @@ function HeaderComponent({
                     <EndScenarioButton
                         className={classNames({
                             'Header--EndScenarioButton': true,
-                            'Header--EndScenarioButton--Ready': endScenarioReady
                         })}
-                        endScenarioReady={endScenarioReady}
                         endScenario={() => endScenario()}
                     />
                 </div>

@@ -43,6 +43,7 @@ class GameComponent extends React.Component {
             },
             showStats: true,
             showMonstersListModal: false,
+            hasMonstersInPlay: false,
         };
         // console.log('GameComponent', this.state);
     }
@@ -76,24 +77,27 @@ class GameComponent extends React.Component {
                 <div className="Game--container">
                     <div className="Game--leftSection">
                         <div className="Game--Section">
-                            <h3
-                                className="Game--Section--Toggle"
-                            >
+                            <h3>
                                 Monsters{' '}
-                        <button
-                            className="Game--MonsterList--Button"
-                            onClick={() =>
-                                this.toggleMonstersListModal(!this.state.showMonstersListModal)
-                            }
-                        >
-                            Add Monsters
-                        </button>
-                        {this.state.showMonstersListModal && (
-                            <MonstersListModal
-                                name={this.props.name}
-                                onClose={() => this.toggleMonstersListModal(false)}
-                            />
-                        )}
+                                <button
+                                    className="Game--MonsterList--Button"
+                                    onClick={() =>
+                                        this.toggleMonstersListModal(
+                                            !this.state.showMonstersListModal
+                                        )
+                                    }
+                                    disabled={this.props.numPlayers === 0}
+                                >
+                                    Add Monsters
+                                </button>
+                                {this.state.showMonstersListModal && (
+                                    <MonstersListModal
+                                        name={this.props.name}
+                                        onClose={() =>
+                                            this.toggleMonstersListModal(false)
+                                        }
+                                    />
+                                )}
                             </h3>
                             <div
                                 className={classNames({
@@ -125,24 +129,19 @@ class GameComponent extends React.Component {
                                 })}
                             >
                                 <PartyManager />
-                                <PlayerTrackers />
+                                {!this.state.hasMonstersInPlay && <PlayerTrackers />}
                             </div>
                         </div>
                         <div className="Game--Section">
-                            <h3
-                                className="Game--Section--Toggle"
-                            >
+                            <h3>
                                 Monster Cards{' '}
                                 <button
                                     className="MonsterDecks--Header--Button"
                                     disabled={
-                                        !deckNames.some(
-                                            m => decks[m].active
-                                        ) || hasActiveCards
+                                        !deckNames.some(m => decks[m].active) ||
+                                        hasActiveCards
                                     }
-                                    onClick={() =>
-                                        revealNextCards(deckNames)
-                                    }
+                                    onClick={() => revealNextCards(deckNames)}
                                 >
                                     翻怪物行动卡
                                 </button>
@@ -181,7 +180,8 @@ export const Game = connect(
             playerNames: Object.keys(state.players.players),
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
             decks: state.monsterDecks,
-            hasActiveCards: monstersDecksSelectors.hasActiveCards(state)
+            hasActiveCards: monstersDecksSelectors.hasActiveCards(state),
+            numPlayers: playersSelectors.numPlayers(state)
         };
     },
     (dispatch, ownProps) => ({
