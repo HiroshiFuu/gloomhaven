@@ -7,12 +7,14 @@ import { EndTurnButton } from './EndTurnButton';
 import { EndScenarioButton } from './EndScenarioButton';
 import { endTurnAction } from '../../store/actions/turn';
 import { endScenarioAction } from '../../store/actions/turn';
-import { selectors as monstersSelectors } from '../../store/monsterDecks';
+import { selectors as monsterDecksSelectors } from '../../store/monsterDecks';
+import { selectors as monstersSelectors } from '../../store/monsters';
 
 import './Header.css';
 
 function HeaderComponent({
     turn,
+    hasActiveCards,
     endTurnReady,
     endTurn,
     endScenario
@@ -25,7 +27,7 @@ function HeaderComponent({
                     <EndTurnButton
                         className={classNames({
                             'Header--EndTurnButton': true,
-                            'Header--EndTurnButton--Ready': endTurnReady
+                            'Header--EndTurnButton--Ready': hasActiveCards
                         })}
                         turn={turn}
                         endTurnReady={endTurnReady}
@@ -47,7 +49,8 @@ function HeaderComponent({
 export const Header = connect(
     state => {
         return {
-            endTurnReady: monstersSelectors.hasActiveCards(state),
+            hasActiveCards: monsterDecksSelectors.hasActiveCards(state),
+            endTurnReady: monsterDecksSelectors.hasActiveCards(state) || !monstersSelectors.hasMonstersAlive(state),
             turn: state.turn
         };
     },

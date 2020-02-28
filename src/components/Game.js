@@ -17,7 +17,7 @@ import { EndTurnButton } from './Header/EndTurnButton';
 import { endTurnAction } from '../store/actions/turn';
 import {
     revealNextCardsAction,
-    selectors as monstersDecksSelectors
+    selectors as monsterDecksSelectors
 } from '../store/monsterDecks';
 
 import SimpleStorage from 'react-simple-storage';
@@ -68,7 +68,7 @@ class GameComponent extends React.Component {
     }
 
     render() {
-        const { decks, hasActiveCards, revealNextCards, endTurn } = this.props;
+        const { decks, hasActiveCards, hasMonstersAlive, revealNextCards, endTurn } = this.props;
         const deckNames = Object.keys(decks);
         return (
             <div>
@@ -150,7 +150,7 @@ class GameComponent extends React.Component {
                                         'MonsterDecks--Header--Button': true,
                                         'MonsterDecks--Header--ButtonReady': hasActiveCards
                                     })}
-                                    endTurnReady={hasActiveCards}
+                                    endTurnReady={hasActiveCards || !hasMonstersAlive}
                                     endTurn={() => endTurn()}
                                 />
                             </h3>
@@ -179,8 +179,9 @@ export const Game = connect(
             selectableClasses: playersSelectors.selectableClasses(state),
             playerNames: Object.keys(state.players.players),
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
+            hasMonstersAlive: monstersSelectors.hasMonstersAlive(state),
             decks: state.monsterDecks,
-            hasActiveCards: monstersDecksSelectors.hasActiveCards(state),
+            hasActiveCards: monsterDecksSelectors.hasActiveCards(state),
             numPlayers: playersSelectors.numPlayers(state)
         };
     },

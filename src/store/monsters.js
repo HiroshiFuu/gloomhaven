@@ -339,5 +339,13 @@ export const selectors = {
     isActive: (state, name) =>
         state.monsters.monsters[name].monsters.some(m => m.alive),
     hasMonstersInPlay: state =>
-        state.boss != null || Object.keys(state.monsters.monsters).length > 0
+        state.boss != null || Object.keys(state.monsters.monsters).length > 0,
+    hasMonstersAlive: state => {
+        let gotAlive = false;
+        Object.keys(state.monsters.monsters).forEach(function(key) {
+            if (state.monsters.monsters[key].monsters.some(m => m.alive))
+                gotAlive = true;
+        });
+        return gotAlive;
+    }
 };
