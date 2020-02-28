@@ -22,7 +22,7 @@ class ListModalComponent extends React.Component {
 
         this.customStyles = {
             content: {
-                top: '40px',
+                top: '60px',
                 left: '100px',
                 right: 'auto',
                 bottom: '10px',
@@ -66,7 +66,7 @@ class ListModalComponent extends React.Component {
 
     calculateSelectSize() {
         if (this.state.windowHeight > 170) {
-            let selectSize = (this.state.windowHeight - 170) / 20;
+            let selectSize = (this.state.windowHeight - 170) / 21 + 1;
             return selectSize;
         }
         else {
@@ -133,6 +133,16 @@ class ListModalComponent extends React.Component {
                             Add Boss
                         </button>
                     </div>
+                    <button
+                        onClick={() =>
+                            this.props.addMonsters(
+                                this.state.selectedMonsters,
+                                this.props.scenarioLevel
+                            )
+                        }
+                    >
+                        Add Monster(s)
+                    </button>
                     <select
                         size={this.calculateSelectSize()}
                         onChange={e =>
@@ -154,16 +164,6 @@ class ListModalComponent extends React.Component {
                             </option>
                         ))}
                     </select>
-                    <button
-                        onClick={() =>
-                            this.props.addMonsters(
-                                this.state.selectedMonsters,
-                                this.props.scenarioLevel
-                            )
-                        }
-                    >
-                        Add Monster(s)
-                    </button>
                     {this.props.numPlayers === 0 && (
                         <div className="Monsters--ListModal--Cover">
                             Add Players
