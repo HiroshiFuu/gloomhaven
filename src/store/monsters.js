@@ -282,7 +282,7 @@ export const reducer = (state = defaultState, action) => {
                                 newMonster(
                                     action.name,
                                     monster.level,
-                                    !monster.alive,
+                                    false,
                                     monster.elite
                                 ),
                                 ...monsters.slice(action.index + 1)

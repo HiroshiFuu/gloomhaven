@@ -34,6 +34,18 @@ class MonsterTrackerComponent extends React.Component {
         this.props.toggleAlive(index);
     }
 
+    onDealDamage(index, damage) {
+        if (this.props.monsters[index].currentHP - damage <= 0) {
+            const activeChange = this.props.monsters
+                .filter((_, i) => i !== index)
+                .every(m => !m.alive);
+            if (activeChange) {
+                this.props.toggleActive(this.props.name);
+            }
+        }
+        this.props.dealDamage(index, damage);
+    }
+
     render() {
         const {
             name,
@@ -137,19 +149,19 @@ class MonsterTrackerComponent extends React.Component {
                                                 className="MonsterTracker--Heal--Icon"
                                                 src={healIcon}
                                                 alt="heal"
-                                                onClick={() => dealDamage(i, -1)}
+                                                onClick={() => this.onDealDamage(i, -1)}
                                             />
                                             <img
                                                 className="MonsterTracker--Damage--Icon damage-1"
                                                 src={damage1Icon}
                                                 alt="damage-1"
-                                                onClick={() => dealDamage(i, 1)}
+                                                onClick={() => this.onDealDamage(i, 1)}
                                             />
                                             <img
                                                 className="MonsterTracker--Damage--Icon damage-5"
                                                 src={damage5Icon}
                                                 alt="damage-5"
-                                                onClick={() => dealDamage(i, 5)}
+                                                onClick={() => this.onDealDamage(i, 5)}
                                             />
                                         </div>
                                         {alive && (
