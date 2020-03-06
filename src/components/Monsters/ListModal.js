@@ -64,9 +64,16 @@ class ListModalComponent extends React.Component {
         this.setState({ selectedMonsters });
     }
 
+    onMonsterSelectionDblClick() {
+        this.props.addMonsters(
+            this.state.selectedMonsters,
+            this.props.scenarioLevel
+        )
+    }
+
     calculateSelectSize() {
         if (this.state.windowHeight > 170) {
-            let selectSize = (this.state.windowHeight - 170) / 21 + 1;
+            let selectSize = (this.state.windowHeight - 170) / 21;
             return selectSize;
         }
         else {
@@ -106,6 +113,40 @@ class ListModalComponent extends React.Component {
                         </select>
                         <button className="Monsters--ListModal--Button" onClick={() => this.props.onClose()}>Close</button>
                     </div>
+                    <div className="Monsters--ListModal--MonsterSelectorContainer">
+                        <button
+                            onClick={() =>
+                                this.props.addMonsters(
+                                    this.state.selectedMonsters,
+                                    this.props.scenarioLevel
+                                )
+                            }
+                        >
+                            Add Monster(s)
+                        </button>
+                        <select
+                            size={this.calculateSelectSize()}
+                            onChange={e =>
+                                this.handleMonsterSelection(e.target.options)
+                            }
+                            multiple
+                            value={this.state.selectedMonsters}
+                            className="Monsters--ListModal--Monsters"
+                            onDoubleClick={() => {this.onMonsterSelectionDblClick()}}
+                        >
+                            {MONSTER_LIST.map(name => (
+                                <option
+                                    value={name}
+                                    key={name}
+                                    disabled={this.props.monstersInPlay.includes(
+                                        name
+                                    )}
+                                >
+                                    {name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <div className="Monsters--ListModal--BossSelectorContainer">
                         <select
                             disabled={this.props.hasBoss}
@@ -133,40 +174,9 @@ class ListModalComponent extends React.Component {
                             Add Boss
                         </button>
                     </div>
-                    <button
-                        onClick={() =>
-                            this.props.addMonsters(
-                                this.state.selectedMonsters,
-                                this.props.scenarioLevel
-                            )
-                        }
-                    >
-                        Add Monster(s)
-                    </button>
-                    <select
-                        size={this.calculateSelectSize()}
-                        onChange={e =>
-                            this.handleMonsterSelection(e.target.options)
-                        }
-                        multiple
-                        value={this.state.selectedMonsters}
-                        className="Monsters--ListModal--Monsters"
-                    >
-                        {MONSTER_LIST.map(name => (
-                            <option
-                                value={name}
-                                key={name}
-                                disabled={this.props.monstersInPlay.includes(
-                                    name
-                                )}
-                            >
-                                {name}
-                            </option>
-                        ))}
-                    </select>
                     {this.props.numPlayers === 0 && (
                         <div className="Monsters--ListModal--Cover">
-                            Add Players
+                            Add Players First
                         </div>
                     )}
                 </div>

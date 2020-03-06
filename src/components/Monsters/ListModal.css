@@ -15,9 +15,15 @@
     font-size: 11px;
 }
 
+.Monsters--ListModal--MonsterSelectorContainer {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+}
+
 .Monsters--ListModal--BossSelectorContainer {
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: 6px;
     display: flex;
     flex-direction: column;
 }
