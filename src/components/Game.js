@@ -110,29 +110,7 @@ class GameComponent extends React.Component {
                         </div>
                     </div>
                     <div className="Game--rightSection">
-                        <div className="Game--Section">
-                            <h3
-                                className="Game--Section--Toggle"
-                                onClick={() => this.toggleSection('players')}
-                            >
-                                Players{' '}
-                                <span className="Game--Section--ToggleSymbol">
-                                    {this.state.showSections.players
-                                        ? '▾'
-                                        : '▸'}
-                                </span>
-                            </h3>
-                            <div
-                                className={classNames({
-                                    'Game--Section--hideSection': !this.state
-                                        .showSections.players
-                                })}
-                            >
-                                <PartyManager />
-                                {!this.state.hasMonstersInPlay && <PlayerTrackers />}
-                            </div>
-                        </div>
-                        <div className="Game--Section">
+                        <div className="Game--Section Monster-Cards-Section">
                             <h3>
                                 Monster Cards{' '}
                                 <button
@@ -164,6 +142,28 @@ class GameComponent extends React.Component {
                                     showStats={false}
                                     showTimeline={false}
                                 />
+                            </div>
+                        </div>
+                        <div className="Game--Section Players-Section">
+                            <h3
+                                className="Game--Section--Toggle"
+                                onClick={() => this.toggleSection('players')}
+                            >
+                                Players{' '}
+                                <span className="Game--Section--ToggleSymbol">
+                                    {this.state.showSections.players
+                                        ? '▾'
+                                        : '▸'}
+                                </span>
+                            </h3>
+                            <div
+                                className={classNames({
+                                    'Game--Section--hideSection': !this.state
+                                        .showSections.players
+                                })}
+                            >
+                                <PartyManager />
+                                {!this.state.hasMonstersInPlay && <PlayerTrackers />}
                             </div>
                         </div>
                     </div>

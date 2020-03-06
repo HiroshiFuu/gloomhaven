@@ -25,6 +25,10 @@ import MindthiefIcon from './Mindthief.jpg';
 import ScoundrelIcon from './Scoundrel.jpg';
 import SpellweaverIcon from './Spellweaver.jpg';
 import TinkererIcon from './Tinkerer.jpg';
+import SunIcon from './Sun.jpg';
+import Music_NoteIcon from './Music Note.jpg';
+import TriforceIcon from './Triforce.jpg';
+
 
 import './PlayerTracker.css';
 
@@ -34,7 +38,10 @@ const CLASS_ICON_MAPPING = {
     Mindthief: MindthiefIcon,
     Scoundrel: ScoundrelIcon,
     Spellweaver: SpellweaverIcon,
-    Tinkerer: TinkererIcon
+    Tinkerer: TinkererIcon,
+    Sun: SunIcon,
+    'Music Note': Music_NoteIcon,
+    Triforce: TriforceIcon
 };
 
 class PlayerTrackerComponent extends React.Component {
