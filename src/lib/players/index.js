@@ -15,3 +15,10 @@ export function getLevel(xp) {
 	}
 	return 1;
 }
+
+export function getXP(level) {
+	if (level == 1)
+		return 0
+	else
+		return XPtable[level - 2];
+}

@@ -17,7 +17,7 @@ import {
 } from '../../store/players';
 import { removePlayerAction } from '../../store/actions/players';
 import { selectors as monstersSelectors } from '../../store/monsters';
-import { getLevel } from '../../lib/players';
+import { getLevel, getXP } from '../../lib/players';
 
 import BruteIcon from './Brute.jpg';
 import CragheartIcon from './Cragheart.jpg';
@@ -78,6 +78,9 @@ class PlayerTrackerComponent extends React.Component {
             level: level
         });
         this.props.selectLevel(parseInt(level, 10));
+        this.setState({
+            xp: getXP(level)
+        });
     }
 
     togglePerksModal(showPerksModal) {
