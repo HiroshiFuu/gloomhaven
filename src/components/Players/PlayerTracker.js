@@ -26,8 +26,12 @@ import ScoundrelIcon from './Scoundrel.jpg';
 import SpellweaverIcon from './Spellweaver.jpg';
 import TinkererIcon from './Tinkerer.jpg';
 import SunIcon from './Sun.jpg';
-import Music_NoteIcon from './Music Note.jpg';
+import MusicNoteIcon from './Music Note.jpg';
 import TriforceIcon from './Triforce.jpg';
+import AngryFaceIcon from './angry-face.svg';
+import MoonEclipseIcon from './eclipse.svg';
+import SawIcon from './saw.svg';
+import TwoMinisIcon from './two-minis.svg';
 
 
 import './PlayerTracker.css';
@@ -40,8 +44,12 @@ const CLASS_ICON_MAPPING = {
     Spellweaver: SpellweaverIcon,
     Tinkerer: TinkererIcon,
     Sun: SunIcon,
-    'Music Note': Music_NoteIcon,
-    Triforce: TriforceIcon
+    'Music Note': MusicNoteIcon,
+    Triforce: TriforceIcon,
+    'Angry Face': AngryFaceIcon,
+    'Moon/Eclipse': MoonEclipseIcon,
+    Saw: SawIcon,
+    'Two-Minis': TwoMinisIcon
 };
 
 class PlayerTrackerComponent extends React.Component {
@@ -50,8 +58,7 @@ class PlayerTrackerComponent extends React.Component {
 
         this.state = {
             xp: this.props.player.xp,
-            level: this.props.player.level,
-            nextLevel: this.props.player.level
+            level: this.props.player.level
         };
     }
 
@@ -63,13 +70,7 @@ class PlayerTrackerComponent extends React.Component {
             xp: xp
         });
         this.props.setXP(xp);
-        this.setNextLevel(getLevel(xp));
-    }
-
-    setNextLevel(nextLevel) {
-        this.setState({
-            nextLevel: nextLevel
-        });
+        this.setLevel(getLevel(xp));
     }
 
     setLevel(level) {
@@ -139,7 +140,7 @@ class PlayerTrackerComponent extends React.Component {
                                 >
                                     +
                                 </button>
-                                L:{this.state.nextLevel}
+                                L:{this.state.level}
                             </div>
                         </div>
                     </div>
@@ -188,8 +189,7 @@ export const PlayerTracker = connect(
             player: state.players.players[ownProps.name],
             hasMonstersInPlay: monstersSelectors.hasMonstersInPlay(state),
             xp: state.players.players[ownProps.name].xp,
-            level: state.players.players[ownProps.name].level,
-            nextLevel: state.players.players[ownProps.name].level
+            level: state.players.players[ownProps.name].level
         };
     },
     (dispatch, ownProps) => {
