@@ -8,12 +8,11 @@ import {selectors as playersSelectors} from "../../store/players";
 
 import "./PlayerTrackers.css";
 
-function PlayerTrackersComponentFunction({playerNames, hasMonstersInPlay, selectableClasses}) {
-    {
-        var lastPlayerKey = 0
-        if (playerNames.length > 0)
-            lastPlayerKey = parseInt(playerNames[playerNames.length - 1].split(" ")[1])
-    }
+function PlayerTrackersComponentFunction({playerNames, hasMonstersInPlay, selectableClasses})
+{
+    var lastPlayerKey = 0
+    if (playerNames.length > 0)
+        lastPlayerKey = parseInt(playerNames[playerNames.length - 1].split(" ")[1], 10)
     return (<div className="PlayerTrackers">
         {playerNames.map((p) => {
             return (<PlayerTracker key={p} name={p} />)

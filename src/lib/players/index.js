@@ -17,7 +17,7 @@ export function getLevel(xp) {
 }
 
 export function getXP(level) {
-	if (level == 1)
+	if (level === 1)
 		return 0
 	else
 		return XPtable[level - 2];
