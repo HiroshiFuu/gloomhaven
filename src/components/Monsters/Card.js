@@ -1,11 +1,11 @@
 import React from 'react';
 
-import {Actions} from "./Actions/Actions";
-import {iconForEndAction} from "../../lib/cards";
+import { Actions } from "./Actions/Actions";
+import { iconForEndAction } from "../../lib/cards";
 
 import "./Card.css";
 
-export function Card({className, name, card, stats}) {
+export function Card({ className, name, card, stats }) {
     return (<div className="Monster--Card">
         <div className="Monster--Card--Name">{name}</div>
         <div className="Monster--Card--Initiative">{card.initiative}</div>

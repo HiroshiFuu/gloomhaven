@@ -26,6 +26,22 @@
     box-shadow: 4px 4px 4px grey;
 }
 
+.Monster--Card--PeekFutureSmall {
+    position: absolute;
+    height: 3rem;
+    width: 3rem;
+    top: -6px;
+    left: 135px;
+}
+
+.Monster--Card--PeekFutureBig {
+    position: absolute;
+    height: 4rem;
+    width: 4rem;
+    top: -12px;
+    left: 185px;
+}
+
 .Monsters--Deck--InactiveCover {
     position: absolute;
     top: 0;

@@ -6,6 +6,8 @@ import { Deck } from './Deck';
 import { MONSTERS, BOSS_STATS } from '../../lib/monsters';
 import { selectors as playersSelectors } from '../../store/players';
 
+import { FutureModal } from './FutureModal';
+
 import './MonsterDecks.css';
 
 class MonsterDecksComponent extends React.Component {
@@ -13,7 +15,35 @@ class MonsterDecksComponent extends React.Component {
         super(props);
 
         this.state = {
+            showFutureModal: false
         };
+    }
+
+    toggleFutureModal(showFutureModal) {
+        this.setState({
+            showFutureModal
+        });
+    }
+
+    peekFuture = (name, number) => {
+        let deck = this.props.decks[name];
+        console.log(deck.cards);
+        let cards = deck.cards;
+        let startIndex = deck.currentIndex + 1;
+        if (startIndex == -1)
+            startIndex = 0;
+        let endIndex = startIndex + number;
+        if (endIndex <= cards.length)
+            console.log('Ok', cards.slice(startIndex, endIndex));
+        else {
+            endIndex = endIndex - cards.length;
+            console.log('Nok', cards.slice(startIndex, cards.length).concat(cards.slice(0, endIndex)));
+        }
+        this.toggleFutureModal(!this.state.showFutureModal);
+    }
+
+    onSubmitAction = (test) => {
+        console.log('onSubmitAction', test);
     }
 
     render() {
@@ -41,6 +71,16 @@ class MonsterDecksComponent extends React.Component {
             .concat(inactiveDecks);
         return (
             <div>
+                {this.state.showFutureModal && (
+                    <FutureModal
+                        onClose={() =>
+                            this.toggleFutureModal(false)
+                        }
+                        submitAction={(test) =>
+                            this.onSubmitAction(test)
+                        }
+                    />
+                )}
                 <div className="MonsterDecks">
                     {deckOrder.map(name => {
                         const deck = decks[name];
@@ -51,6 +91,8 @@ class MonsterDecksComponent extends React.Component {
                                     name={name}
                                     card={deck.currentCard}
                                     active={deck.active}
+                                    peekFutureSmallFunc={this.peekFuture}
+                                    peekFutureBigFunc={this.peekFuture}
                                 />
                             );
                         }
@@ -69,6 +111,7 @@ class MonsterDecksComponent extends React.Component {
                                 card={deck.currentCard}
                                 active={deck.active}
                                 stats={monsterStats}
+                                peekFutureFunc={this.peekFuture}
                             />
                         );
                     })}
