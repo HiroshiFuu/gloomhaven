@@ -10,6 +10,9 @@ import { FutureModal } from './FutureModal';
 
 import './MonsterDecks.css';
 
+var peekingCards;
+var peekingDeckName;
+
 class MonsterDecksComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -26,24 +29,51 @@ class MonsterDecksComponent extends React.Component {
     }
 
     peekFuture = (name, number) => {
+        peekingDeckName = name;
         let deck = this.props.decks[name];
-        console.log(deck.cards);
+        console.log(deck.cards, deck.currentIndex);
         let cards = deck.cards;
         let startIndex = deck.currentIndex + 1;
-        if (startIndex == -1)
-            startIndex = 0;
         let endIndex = startIndex + number;
-        if (endIndex <= cards.length)
-            console.log('Ok', cards.slice(startIndex, endIndex));
+        if (endIndex <= cards.length) {
+            peekingCards = cards.slice(startIndex, endIndex);
+            console.log("Ok", peekingCards);
+        }
         else {
             endIndex = endIndex - cards.length;
-            console.log('Nok', cards.slice(startIndex, cards.length).concat(cards.slice(0, endIndex)));
+            peekingCards = cards.slice(startIndex, cards.length).concat(cards.slice(0, endIndex));
+            console.log("Nok", peekingCards);
         }
         this.toggleFutureModal(!this.state.showFutureModal);
     }
 
-    onSubmitAction = (test) => {
-        console.log('onSubmitAction', test);
+    onSubmitAction = (seqs) => {
+        let deck = this.props.decks[peekingDeckName];
+        console.log("seqs", seqs, deck);
+        let cards = deck.cards;
+        let startIndex = deck.currentIndex + 1;
+        let offset = 0;
+        let seq_length = Object.keys(seqs).length;
+        if (startIndex + seq_length > cards.length)
+            offset = startIndex + seq_length - cards.length
+        console.log('offset', offset);
+        let new_cards = cards.slice(0 + offset, startIndex);
+        // for (let i = 0; i < seq_length; i++) {
+        //     console.log(i, startIndex, seqs[i], offset);
+        //     console.log(cards[startIndex + seqs[i] - 1], peekingCards[i]);
+        //     // cards[startIndex + seqs[i]] = peekingCards[i];
+        // }
+        for (let i = 0; i < seq_length; i++) {
+            new_cards.push({});
+        }
+        for (let i = 0; i < seq_length; i++) {
+            new_cards[startIndex - offset + seqs[i] - 1] = peekingCards[i];
+        }
+        if (offset == 0)
+            new_cards = new_cards.concat(cards.slice(startIndex + seq_length, cards.length + 1));
+        console.log("onSubmitAction", cards, new_cards);
+        this.props.decks[peekingDeckName].cards = new_cards;
+        this.props.decks[peekingDeckName].currentIndex -= offset;
     }
 
     render() {
@@ -52,7 +82,7 @@ class MonsterDecksComponent extends React.Component {
             showStats,
             numPlayers,
             scenarioLevel,
-            boss,
+            boss
         } = this.props;
         const deckNames = Object.keys(decks);
         const activeDecks = deckNames.filter(m => decks[m].active);
@@ -76,9 +106,11 @@ class MonsterDecksComponent extends React.Component {
                         onClose={() =>
                             this.toggleFutureModal(false)
                         }
-                        submitAction={(test) =>
-                            this.onSubmitAction(test)
+                        submitAction={(seqs) =>
+                            this.onSubmitAction(seqs)
                         }
+                        peekingDeckName={peekingDeckName}
+                        peekingCards={peekingCards}
                     />
                 )}
                 <div className="MonsterDecks">
