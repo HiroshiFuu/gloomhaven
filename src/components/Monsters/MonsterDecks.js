@@ -70,13 +70,13 @@ class MonsterDecksComponent extends React.Component {
         }
         let put_bottom = false;
         for (let i = 0; i < seq_length; i++) {
-            if (seqs[i] == -1) {
+            if (seqs[i] === -1) {
                 seqs[i] = seq_length;
                 put_bottom = true;
             }
             new_cards[startIndex - offset + seqs[i] - 1] = peekingCards[i];
         }
-        if (offset == 0)
+        if (offset === 0)
             new_cards = new_cards.concat(cards.slice(startIndex + seq_length, cards.length + 1));
         if (put_bottom) {
             let temp = new_cards[startIndex - offset + seq_length - 1];

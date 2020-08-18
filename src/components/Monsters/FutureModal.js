@@ -42,9 +42,10 @@ class FutureModalComponent extends React.Component {
         if ((this.props.mode !== -1 && seq < 1) || seq > this.props.peekingCards.length) {
             return;
         }
-        this.state.seq[i] = seq;
+        let seqs = this.state.seq;
+        seqs[i] = seq;
         this.setState({
-            seq: this.state.seq
+            seq: seqs
         });
     }
 
