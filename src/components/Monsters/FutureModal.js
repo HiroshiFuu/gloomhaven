@@ -5,6 +5,9 @@ import { Card } from "./Card";
 
 import './FutureModal.css';
 
+import sees from "./sees2.wav";
+import knows from "./knows2.wav";
+
 class FutureModalComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +15,8 @@ class FutureModalComponent extends React.Component {
         this.customStyles = {
             content: {
                 top: "90px",
-                left: "50px",
+                left: "150px",
+                right: "150px",
                 bottom: "200px",
                 padding: "10px 20px",
                 overflowY: "hidden",
@@ -25,6 +29,8 @@ class FutureModalComponent extends React.Component {
             seqs[i] = i + 1;
         }
 
+        var audio = null;
+
         this.state = {
             windowHeight: document.documentElement.clientHeight,
             seq: seqs,
@@ -33,7 +39,7 @@ class FutureModalComponent extends React.Component {
     }
 
     setSEQ(seq, i) {
-        if (seq < 1 || seq > this.props.peekingCards.length) {
+        if ((this.props.mode !== -1 && seq < 1) || seq > this.props.peekingCards.length) {
             return;
         }
         this.state.seq[i] = seq;
@@ -48,6 +54,8 @@ class FutureModalComponent extends React.Component {
 
     componentDidMount() {
         window.addEventListener("resize", this._updateDimensions);
+        this.audio = new Audio(this.state.textChoice ?  sees : knows);
+        console.log(this.audio, this.props.mode);
     }
 
     componentWillUnmount() {
@@ -71,7 +79,7 @@ class FutureModalComponent extends React.Component {
                                     <div className="PlayerTracker--SEQ--Buttons">
                                         <button
                                             className="PlayerTracker--SEQ--Button"
-                                            disabled={this.state.seq[i] === 1}
+                                            disabled={this.state.seq[i] === this.props.mode}
                                             onClick={() =>
                                                 this.setSEQ(this.state.seq[i] - 1, i)
                                             }
@@ -96,8 +104,12 @@ class FutureModalComponent extends React.Component {
                     <button className="Future--ListModal--Button"
                         onClick={() => 
                             {
-                                this.props.submitAction(this.state.seq);
-                                this.props.onClose();
+                                this.audio.play();
+                                let that = this;
+                                setTimeout(function(){
+                                    that.props.submitAction(that.state.seq, that.props.mode);
+                                    that.props.onClose();
+                                }, this.state.textChoice ? 4000 : 3000);
                             }
                         }
                     >

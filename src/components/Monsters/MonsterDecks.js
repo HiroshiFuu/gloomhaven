@@ -18,7 +18,8 @@ class MonsterDecksComponent extends React.Component {
         super(props);
 
         this.state = {
-            showFutureModal: false
+            showFutureModal: false,
+            mode: 0
         };
     }
 
@@ -28,7 +29,7 @@ class MonsterDecksComponent extends React.Component {
         });
     }
 
-    peekFuture = (name, number) => {
+    peekFuture = (name, number, mode) => {
         peekingDeckName = name;
         let deck = this.props.decks[name];
         console.log(deck.cards, deck.currentIndex);
@@ -44,19 +45,20 @@ class MonsterDecksComponent extends React.Component {
             peekingCards = cards.slice(startIndex, cards.length).concat(cards.slice(0, endIndex));
             console.log("Nok", peekingCards);
         }
+        this.setState({ mode });
         this.toggleFutureModal(!this.state.showFutureModal);
     }
 
-    onSubmitAction = (seqs) => {
+    onSubmitAction = (seqs, mode) => {
         let deck = this.props.decks[peekingDeckName];
-        console.log("seqs", seqs, deck);
+        console.log("onSubmitAction", seqs, deck, mode);
         let cards = deck.cards;
         let startIndex = deck.currentIndex + 1;
         let offset = 0;
         let seq_length = Object.keys(seqs).length;
         if (startIndex + seq_length > cards.length)
             offset = startIndex + seq_length - cards.length
-        console.log('offset', offset);
+        console.log("offset", offset);
         let new_cards = cards.slice(0 + offset, startIndex);
         // for (let i = 0; i < seq_length; i++) {
         //     console.log(i, startIndex, seqs[i], offset);
@@ -66,11 +68,21 @@ class MonsterDecksComponent extends React.Component {
         for (let i = 0; i < seq_length; i++) {
             new_cards.push({});
         }
+        let put_bottom = false;
         for (let i = 0; i < seq_length; i++) {
+            if (seqs[i] == -1) {
+                seqs[i] = seq_length;
+                put_bottom = true;
+            }
             new_cards[startIndex - offset + seqs[i] - 1] = peekingCards[i];
         }
         if (offset == 0)
             new_cards = new_cards.concat(cards.slice(startIndex + seq_length, cards.length + 1));
+        if (put_bottom) {
+            let temp = new_cards[startIndex - offset + seq_length - 1];
+            new_cards[startIndex - offset + seq_length - 1] = new_cards[cards.length - 1];
+            new_cards[cards.length - 1] = temp;
+        }
         console.log("onSubmitAction", cards, new_cards);
         this.props.decks[peekingDeckName].cards = new_cards;
         this.props.decks[peekingDeckName].currentIndex -= offset;
@@ -111,6 +123,7 @@ class MonsterDecksComponent extends React.Component {
                         }
                         peekingDeckName={peekingDeckName}
                         peekingCards={peekingCards}
+                        mode={this.state.mode}
                     />
                 )}
                 <div className="MonsterDecks">
@@ -123,8 +136,7 @@ class MonsterDecksComponent extends React.Component {
                                     name={name}
                                     card={deck.currentCard}
                                     active={deck.active}
-                                    peekFutureSmallFunc={this.peekFuture}
-                                    peekFutureBigFunc={this.peekFuture}
+                                    peekFutureFunc={this.peekFuture}
                                 />
                             );
                         }
